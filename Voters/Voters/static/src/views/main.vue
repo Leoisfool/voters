@@ -5,7 +5,7 @@
         Voters
       </button>
       <el-breadcrumb separator="/" class="option">
-        <el-breadcrumb-item :to="{ path: 'uxlog' }">主页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: 'sign/login'}">登录</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: 'sign/register'}">注册</el-breadcrumb-item>
       </el-breadcrumb>
@@ -96,7 +96,7 @@ export default {
       }, {
         id: 2,
         title: '你能接受同性恋吗？',
-        voteAble: '开放',        
+        voteAble: '开放',
         sponsor: 'sponsor zl',
         date: '2016-05-03',
         introduction: '爱无关性别'
@@ -104,14 +104,14 @@ export default {
         id: 3,
         title: '你能接受同性恋吗？',
         sponsor: 'sponsor zl',
-        voteAble: '开放',        
+        voteAble: '开放',
         date: '2016-05-03',
         introduction: '爱无关性别'
       }, {
         id: 4,
         title: '你能接受同性恋吗？',
         sponsor: 'sponsor zl',
-        voteAble: '开放',        
+        voteAble: '开放',
         date: '2016-05-03',
         introduction: '爱无关性别'
       }]
@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     jump () {
-      this.$router.push('uxlog')
+      this.$router.push('voters')
     },
     init () {
       axios.get('http://127.0.0.1:8080/webapi/login_user').then(function (res) {
