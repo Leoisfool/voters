@@ -384,7 +384,6 @@ export default {
   float: right;
   padding-right: 10px;
 }
-
 .voter .headerLink .el-dropdown-link .icon{
   font-size: 1.9rem;
 }
