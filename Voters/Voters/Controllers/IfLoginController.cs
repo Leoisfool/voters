@@ -10,40 +10,38 @@ using Newtonsoft.Json.Linq;
 namespace Voters.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Logout")]
-    public class LogoutController : Controller
+    [Route("api/IfLogin")]
+    public class IfLoginController : Controller
     {
-        // GET: api/Logout
+        // GET: api/IfLogin
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // POST: api/Logout
+        // POST: api/IfLogin
         [HttpPost]
-        public IActionResult Post([FromBody]JObject value)
+        public IActionResult Post([FromBody]IfLogin value)
         {
-            if (value == null)
-            {
-                return BadRequest();
-            }
+            string token = value.Token;
+            DBAction injj = new DBAction();
             var state = 0;
+
             ICache cache = new ICache();
-            if(cache.DelHash(value["Token"].ToString(), "session"))
+
+            if (cache.GetHash(token, "session") != null)
             {
                 state = 1;
             }
-            var data = new
-            {
+
+            var data = new {
                 State = state
             };
-
-            var json = JObject.FromObject(data);
-            return new ObjectResult(json);
+            return new ObjectResult(JObject.FromObject(data));
         }
-
-        // PUT: api/Logout/5
+        
+        // PUT: api/IfLogin/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {

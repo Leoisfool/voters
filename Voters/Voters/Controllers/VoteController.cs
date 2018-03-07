@@ -22,9 +22,24 @@ namespace Voters.Controllers
 
         // GET: api/Vote/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            long count = ControllerTools.GetVoteCount();
+            if (id <= 0 ||  (id - 1)*10 >= count)
+            {
+                return BadRequest();
+            }
+            var list = new VoteItem[10];
+            //for(int i = 0; i < 10; i++)
+            //{
+            //    var data = new VoteItem
+            //    {
+
+            //    };
+            //    list[i] = data;
+            //}
+            return new ObjectResult(1
+                );
         }
         
         // POST: api/Vote

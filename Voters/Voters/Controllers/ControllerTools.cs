@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Voters.Models;
 
 namespace Voters.Controllers
 {
@@ -32,6 +33,13 @@ namespace Voters.Controllers
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(ts.TotalSeconds).ToString();
+        }
+
+        public static long GetVoteCount()
+        {
+            DBAction injj = new DBAction();
+            long res = injj.GetAllVoteCount();
+            return res;
         }
     }
 }

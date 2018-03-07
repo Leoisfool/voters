@@ -13,18 +13,19 @@ namespace Voters.Controllers
     [Route("api/Item")]
     public class ItemController : Controller
     {
-        // GET: api/Item
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
-        // GET: api/Item/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public IActionResult Get()
         {
-            return "value";
+            string id = Request.Query["ItemId"];
+            ICache cache = new ICache();
+            DBAction db = new DBAction();
+            int res = (int)cache.GetZsetValue("score", id);
+            ItemItem item = new ItemItem();
+            db.GetItemInfo(uint.Parse(id),ref item);
+            item.Score = res;
+            var json = JObject.FromObject(item);
+            return new ObjectResult(json);
         }
 
         // POST: api/Item

@@ -13,6 +13,7 @@ namespace Voters.Models
 
         //the lock for singleton
         private static readonly object Locker = new object();
+        private static readonly object ScoreZsetLocker = new object();
 
         //singleton
         private static ConnectionMultiplexer redisConn;
@@ -44,8 +45,12 @@ namespace Voters.Models
         {
             redisConn = getRedisConn();
             var db = redisConn.GetDatabase();
-            var res = db.HashGet(key, filed);
-            if (res.IsNullOrEmpty)
+            string res;
+            try
+            {
+                res = db.HashGet(key, filed).ToString();
+            }
+            catch
             {
                 return null;
             }
@@ -80,6 +85,17 @@ namespace Voters.Models
             redisConn = getRedisConn();
             var db = redisConn.GetDatabase();
             return db.SortedSetAdd(key, item, value);
+        }
+
+        public double AddScoreZset(string key, string item, double value)
+        {
+            redisConn = getRedisConn();
+            var db = redisConn.GetDatabase();
+            lock(ScoreZsetLocker)
+            {
+                string val = DateTime.Now.ToString();
+                return db.SortedSetIncrement(key, item, 1);
+            }
         }
 
         public double GetZsetValue(string key, string member)

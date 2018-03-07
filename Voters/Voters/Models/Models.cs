@@ -38,5 +38,17 @@ namespace Voters.Models
         public string Token { get; set; }
         public int UserId { get; set; }
     }
+
+    public class DoVote
+    {
+        public uint VoteId { get; set; }
+        public uint[] ItemIds { get; set; }
+        public string Token { get; set; }
+    }
+
+    public class IfLogin
+    {
+        public string Token { get; set; }
+    }
 }
 
