@@ -40,32 +40,38 @@
         style="width: 100%">
         <el-table-column
           fixed
-          prop="date"
+          prop="title"
           label="标题"
+          width="250">
+        </el-table-column>
+        <el-table-column
+          prop="voteAble"
+          label="投票开放与否"
           width="150">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="sponsor"
           label="发起者"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="province"
+          prop="date"
           label="过期时间"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="city"
+          prop="introduction"
           label="介绍"
-          width="1220">
+          width="520">
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="200">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small">不感兴趣</el-button>
+            <el-button type="text" size="small">关注</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -81,25 +87,33 @@ export default {
     return {
       msg: 'hello',
       tableData: [{
+        id: 1,
+        title: '你能接受同性恋吗？',
+        sponsor: 'sponsor zl',
+        voteAble: '开放',
         date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区'
+        introduction: '爱无关性别爱无关性别爱无关性别爱无关性别爱无关性别'
       }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区'
+        id: 2,
+        title: '你能接受同性恋吗？',
+        voteAble: '开放',        
+        sponsor: 'sponsor zl',
+        date: '2016-05-03',
+        introduction: '爱无关性别'
       }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区'
+        id: 3,
+        title: '你能接受同性恋吗？',
+        sponsor: 'sponsor zl',
+        voteAble: '开放',        
+        date: '2016-05-03',
+        introduction: '爱无关性别'
       }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区普陀区'
+        id: 4,
+        title: '你能接受同性恋吗？',
+        sponsor: 'sponsor zl',
+        voteAble: '开放',        
+        date: '2016-05-03',
+        introduction: '爱无关性别'
       }]
     }
   },
@@ -151,7 +165,7 @@ export default {
   display: flex;
   flex-direction: column;
   /* TODO */
-  background-color:#ffc;
+  background-color:#ffe;
 }
 .uxButton {
   -moz-appearance: none;
