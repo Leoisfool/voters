@@ -28,10 +28,19 @@ namespace Voters
             //配置跨域处理
             services.AddCors(options =>
             {
-                options.AddPolicy("any", builder =>
+                options.AddPolicy("AllowAllOrigins",builder =>
                 {
-                    builder.AllowAnyOrigin() //允许任何来源的主机访问
-                    .AllowAnyMethod()
+                    builder.AllowAnyOrigin();
+                });
+
+                options.AddPolicy("AllowAllMethods",builder =>
+                {
+                    builder.WithOrigins("*").AllowAnyMethod();
+                });
+
+                options.AddPolicy("AllowAllHeaders",builder =>
+                {
+                    builder.WithOrigins("*")
                     .AllowAnyHeader();
                 });
             });
@@ -41,6 +50,7 @@ namespace Voters
             {
                 options.Filters.Add(new CorsAuthorizationFilterFactory("AllowSpecificOrigin"));
             });
+
 
         }
 
