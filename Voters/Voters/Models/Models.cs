@@ -18,7 +18,8 @@ namespace Voters.Models
 
     public class VoteItem
     {
-        public ulong UserBelong { get; set; }
+        public uint VoteId { get; set; }
+        public uint UserBelong { get; set; }
         public string Topic { get; set; }
         public string Desc { get; set; }
         public ulong OverdueTime { get; set; }
@@ -26,7 +27,8 @@ namespace Voters.Models
         public uint  VoteAble { get; set; }
         public long MultiNum { get; set; }
         public string Token { get; set; }
-        public int UserId { get; set; }
+        public uint[] ItemIds { get; set; }
+
     }
 
     public class ItemItem

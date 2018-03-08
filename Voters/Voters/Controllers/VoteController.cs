@@ -15,9 +15,27 @@ namespace Voters.Controllers
     {
         // GET: api/Vote
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            string cc = Request.Query["id"];
+            uint id;
+            try
+            {
+                id = uint.Parse(cc);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            VoteItem res = new VoteItem();
+            DBAction injj = new DBAction();
+            if(injj.GetVoteItem(id, ref res) != true || injj.getItemsInVote(id, ref res) != true)
+            {
+                return BadRequest();
+            }
+            
+            var json = JObject.FromObject(res);
+            return new ObjectResult(json);
         }
 
         // GET: api/Vote/5
@@ -38,8 +56,7 @@ namespace Voters.Controllers
             //    };
             //    list[i] = data;
             //}
-            return new ObjectResult(1
-                );
+            return new ObjectResult(1);
         }
         
         // POST: api/Vote

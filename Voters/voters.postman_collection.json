@@ -1,0 +1,666 @@
+{
+	"info": {
+		"name": "voters",
+		"_postman_id": "e83f5d3b-5c4c-4aad-a9de-f4efded951fc",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5a081b40-94f2-45bc-8d5c-25ddd6b7416e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"UserName\":\"zlll\",\r\n\t\"Password\":123\r\n}"
+				},
+				"url": "http://localhost:12612/api/register",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "d8d17782-93bf-4b8d-9f0a-5507b727a32d",
+					"name": "Register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"UserName\":\"zll\",\r\n\t\"Password\":123\r\n}"
+						},
+						"url": "http://localhost:12612/api/register"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 13:26:25 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?QzpcVXNlcnNcdGhpbmtcc291cmNlXHJlcG9zXFZvdGVyc1xWb3RlcnNcYXBpXHJlZ2lzdGVy?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1,\"UserName\":\"zll\"}"
+				}
+			]
+		},
+		{
+			"name": "CreateVote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"USA大选\",\r\n\t\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":1,\r\n\t\"MultiNum\":1,\r\n\t\"OverdueTime\":1520319941,\r\n\t\"CreateTime\":1520309941,\r\n\t\"Token\":\"21BAD4931F81504C5AF7E7A7F793CEE2\"\r\n}"
+				},
+				"url": "http://localhost:12612/api/vote",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "29794338-bfe5-459b-8a76-b047be6ed554",
+					"name": "CreateVote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"美国大选\",\r\n\t\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":1,\r\n\t\"MultiNum\":1,\r\n\t\"OverdueTime\":1520319941,\r\n\t\"CreateTime\":1520309941,\r\n\t\"Token\":\"706EC27666185F26A3DCC5E04C14C904\"\r\n}"
+						},
+						"url": "http://localhost:12612/api/vote"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 04:27:10 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?QzpcVXNlcnNcdGhpbmtcc291cmNlXHJlcG9zXFZvdGVyc1xWb3RlcnNcYXBpXHZvdGU=?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1}"
+				}
+			]
+		},
+		{
+			"name": "CreateItem",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"VoteId\":5,\r\n\t\"Desc\":\"希拉里\",\r\n\t\"DescPicUrl\":\"XXXX\",\r\n\t\"Token\":\"21BAD4931F81504C5AF7E7A7F793CEE2\",\r\n\t\"UserId\":3\r\n}"
+				},
+				"url": "http://localhost:12612/api/item",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "fce63a08-a27f-44a4-a3b3-ca86f2bc8507",
+					"name": "CreateItem",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"VoteId\":3,\r\n\t\"Desc\":\"特朗普\",\r\n\t\"DescPicUrl\":\"XXXX\",\r\n\t\"Token\":\"706EC27666185F26A3DCC5E04C14C904\",\r\n\t\"UserId\":3\r\n}"
+						},
+						"url": "http://localhost:12612/api/item"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 05:10:09 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?QzpcVXNlcnNcdGhpbmtcc291cmNlXHJlcG9zXFZvdGVyc1xWb3RlcnNcYXBpXGl0ZW0=?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"UserName\":\"zlll\",\n\t\"Password\":123\n}"
+				},
+				"url": "http://localhost:12612/api/login",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "66683465-0516-4137-9974-1224f8bb6818",
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"UserName\":\"zll\",\n\t\"Password\":123\n}"
+						},
+						"url": "http://localhost:12612/api/login"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 14:19:38 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?QzpcVXNlcnNcdGhpbmtcc291cmNlXHJlcG9zXFZvdGVyc1xWb3RlcnNcYXBpXGxvZ2lu?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1,\"Token\":\"76CC8066ED4061F6C980168ED4E27CE1\",\"UserId\":3}"
+				}
+			]
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Token\": \"334968146E88D3E161E679F27137C04A\"\n}"
+				},
+				"url": "http://localhost:12612/api/logout",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "fe1ff82f-680c-497a-8d1c-61ae5d22698e",
+					"name": "logout",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Token\": \"21BAD4931F81504C5AF7E7A7F793CEE2\"\n}"
+						},
+						"url": "http://localhost:12612/api/logout"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 16:03:08 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?QzpcVXNlcnNcdGhpbmtcc291cmNlXHJlcG9zXFZvdGVyc1xWb3RlcnNcYXBpXGxvZ291dA==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1}"
+				}
+			]
+		},
+		{
+			"name": "dovote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"VoteId\": 3,\n    \"Token\":\"1C749D557AECB7968923B7DA6196B103\",\n    \"ItemIds\":[\n    \t5\n\t]\n}"
+				},
+				"url": "http://localhost:12612/api/dovote",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "9f83e694-8f3f-4b4d-9237-47821b5960e4",
+					"name": "dovote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"VoteId\": 3,\n    \"Token\":\"1C749D557AECB7968923B7DA6196B103\",\n    \"ItemIds\":[\n    \t5\n\t]\n}"
+						},
+						"url": "http://localhost:12612/api/dovote"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 07 Mar 2018 10:00:52 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?QzpcVXNlcnNcdGhpbmtcc291cmNlXHJlcG9zXFZvdGVyc1xWb3RlcnNcYXBpXGRvdm90ZQ==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":0,\"ErrorInfo\":\"你已经投过票了\"}"
+				}
+			]
+		},
+		{
+			"name": "GetItemInfo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:12612/api/item?ItemId=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "12612",
+					"path": [
+						"api",
+						"item"
+					],
+					"query": [
+						{
+							"key": "ItemId",
+							"value": "5",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Iflogin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Token\":\"334968146E88D3E161E679F27137C04A\"\n}"
+				},
+				"url": "http://localhost:12612/api/iflogin",
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetVoteInfo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:12612/api/vote?id=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "12612",
+					"path": [
+						"api",
+						"vote"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "0d35d362-ad71-4962-bbbd-d30646cad681",
+					"name": "GetVoteInfo",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:12612/api/vote?id=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "12612",
+							"path": [
+								"api",
+								"vote"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 07 Mar 2018 20:19:17 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcdm90ZQ==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"VoteId\":5,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520309941,\"CreateTime\":1520319941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":[10,11,12]}"
+				}
+			]
+		}
+	]
+}

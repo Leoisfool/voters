@@ -22,7 +22,8 @@ namespace Voters.Models
         }
 
         private string insertUserStr = "INSERT INTO `user` (`user_name`, `password`) VALUES (@userName,@password)";
-        private string insertVoteStr = "INSERT INTO `vote` (`user_belong`, `topic`, `desc`, `vote_able`, `create_time`, `overdue_time`, `multi_num`) VALUES (@userId, @topic, @desc, @voteAble, @createTime, @overDueTime, @multiNum)";
+        private string insertVoteStr = "INSERT INTO `vote` (`user_belong`, `topic`, `desc`, `vote_able`, `create_time`, `overdue_time`, `multi_num`)" +
+                                        " VALUES (@userId, @topic, @desc, @voteAble, @createTime, @overDueTime, @multiNum)";
         private string insertItemStr = "INSERT INTO .`item` (`vote_id`, `desc`, `desc_pic_url`) VALUES (@voteId, @desc, @descPicUrl)";
         private string checkItemInVoteStr = "SELECT * FROM `item` WHERE vote_id=@voteId AND id=@itemId";
         private string checkAccountStr = "SELECT id FROM voters.user where user_name=@userName AND password=@password";
@@ -30,13 +31,17 @@ namespace Voters.Models
         private string updateVoteScoreStr = "UPDATE `voters`.`item` SET `score`=@score WHERE `id`=@itemId";
         private string getLimitVoteItemsStr = "SELECT multi_num FROM vote WHERE id=@voteId";
         private string getItemInfoStr = "SELECT `item`.`id`, `item`.`vote_id`, `item`.`score`, `item`.`desc`,`item`.`desc_pic_url` FROM `voters`.`item` WHERE id=@itemId";
-
+        private string getVoteItemStr = "SELECT `vote`.`id`, `vote`.`user_belong`, `vote`.`topic`, `vote`.`desc`, `vote`.`vote_able`,  `vote`.`create_time`, `vote`.`overdue_time`," +
+                                        " `vote`.`multi_num` FROM `voters`.`vote` WHERE id=@voteId";
+        private string getItemsInVoteStr = "SELECT `item`.`id` FROM `voters`.`item` WHERE vote_id=@voteId";
         public bool InsertUser(UserItem item)
         {
-            MySqlCommand command = new MySqlCommand();
-            command.CommandText = insertUserStr;
-            command.CommandType = System.Data.CommandType.Text;
-            command.Connection = conn;
+            MySqlCommand command = new MySqlCommand
+            {
+                CommandText = insertUserStr,
+                CommandType = System.Data.CommandType.Text,
+                Connection = conn
+            };
             command.Parameters.Add(new MySqlParameter("@userName", item.UserName));
             command.Parameters.Add(new MySqlParameter("@password", item.Password));
             conn.Open();
@@ -292,7 +297,71 @@ namespace Voters.Models
             return false;
         }
 
+        public bool GetVoteItem(uint voteId, ref VoteItem item) 
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = getVoteItemStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@voteId", voteId));
+
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteReader();
+                if (res.Read())
+                {
+                    item.VoteId = (uint)res[0];
+                    item.UserBelong = (uint)res[1];
+                    item.Topic = (string)res[2];
+                    item.Desc = (string)res[3];
+                    item.VoteAble = (Byte)res[4];
+                    item.OverdueTime = (uint)res[5];
+                    item.CreateTime = (uint)res[6];
+                    item.MultiNum = (uint)res[7];
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return false;
+        }
+
+        public bool getItemsInVote(uint voteId, ref VoteItem item)
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = getItemsInVoteStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@voteId", voteId));
+
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteReader();
+                List<uint> b = new List<uint>();
+                while (res.Read())
+                {
+                    b.Add((uint)res[0]);
+                }
+                item.ItemIds = b.ToArray();
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return true;
+        }
+
     }
-
-
 }
