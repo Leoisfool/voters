@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Voters.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace Voters.Controllers
 {
     [Produces("application/json")]
     [Route("api/Vote")]
+    [EnableCors("AllowSpecificOrigin")]
     public class VoteController : Controller
     {
         // GET: api/Vote

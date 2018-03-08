@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-      <form @submit.prevent="register">
+      <form>
         <div class="form-group">
           <i class="iconfont icon-user1"></i>
           <input type="text" v-model="ruleForm.UserName" placeholder="请输入用户名">
@@ -15,7 +15,7 @@
         </div>
 
         <div class="form-group">
-          <button type="submit" class="button">注册</button>
+          <button type="button" class="button" @click="register">注册</button>
         </div>
       </form>
     </div>
@@ -36,13 +36,9 @@ export default {
     }
   },
   methods: {
-    register: function () {
-      var formData = JSON.stringify(this.ruleForm)
-      axios.post('http://localhost:12612/api/register', formData,{
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+    register () {
+      var formData = qs.stringify(this.ruleForm)
+      axios.post('http://localhost:12612/api/register', formData)
         .then( res => {
           console.log(res)
         })

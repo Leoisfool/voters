@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Voters.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace Voters.Controllers
 {
     [Produces("application/json")]
     [Route("api/Logout")]
+    [EnableCors("AllowSpecificOrigin")]
     public class LogoutController : Controller
     {
         // GET: api/Logout

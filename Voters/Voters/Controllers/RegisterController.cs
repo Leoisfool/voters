@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Voters.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Cors;
 
 namespace Voters.Controllers
 {
     [Produces("application/json")]
     [Route("api/Register")]
+    [EnableCors("AllowSpecificOrigin")]
     public class RegisterController : Controller
     {
         private readonly ILogger _logger;

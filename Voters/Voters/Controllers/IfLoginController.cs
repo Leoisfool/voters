@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Voters.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace Voters.Controllers
 {
     [Produces("application/json")]
     [Route("api/IfLogin")]
+    [EnableCors("AllowSpecificOrigin")]
     public class IfLoginController : Controller
     {
         // GET: api/IfLogin
