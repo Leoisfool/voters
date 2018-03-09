@@ -33,7 +33,8 @@ namespace Voters.Models
 
     public class ItemItem
     {
-        public long VoteId { get; set; }
+        public uint ItemId { get; set; }
+        public uint VoteId { get; set; }
         public long Score { get; set; }
         public string DescPicUrl { get; set; }
         public string Desc { get; set; }

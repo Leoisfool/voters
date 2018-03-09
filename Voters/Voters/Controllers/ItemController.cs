@@ -66,10 +66,35 @@ namespace Voters.Controllers
             return new ObjectResult(json);
         }
         
-        // PUT: api/Item/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // PUT: api/Item/
+        [HttpPut]
+        public IActionResult Put([FromBody]ItemItem value)
         {
+            if (value == null)
+            {
+                return BadRequest();
+            }
+            DBAction injj = new DBAction();
+            var state = 0;
+
+            ICache cache = new ICache();
+            string userId;
+            if((userId = cache.GetHash(value.Token, "session")) == null)
+            {
+                return BadRequest();
+            } 
+            if (injj.CheckVoteBelongToUser(uint.Parse(userId) ,value.VoteId) && injj.checkItemsInVote(value.VoteId, value.ItemId) &&  injj.UpdateItenItem(value))
+            {
+                state = 1;
+            }
+
+            var data = new
+            {
+                State = state,
+            };
+
+            var json = JObject.FromObject(data);
+            return new ObjectResult(json);
         }
         
         // DELETE: api/ApiWithActions/5

@@ -28,13 +28,7 @@ namespace Voters.Models
 
         private string insertItemStr = "INSERT INTO .`item` (`vote_id`, `desc`, `desc_pic_url`) VALUES (@voteId, @desc, @descPicUrl)";
 
-        private string checkItemInVoteStr = "SELECT * FROM `item` WHERE vote_id=@voteId AND id=@itemId";
-
-        private string checkAccountStr = "SELECT id FROM voters.user where user_name=@userName AND password=@password";
-
         private string getAllVoteCountStr = "SELECT COUNT(*) FROM `vote`";
-
-        private string updateVoteScoreStr = "UPDATE `voters`.`item` SET `score`=@score WHERE `id`=@itemId";
 
         private string getLimitVoteItemsStr = "SELECT multi_num FROM vote WHERE id=@voteId";
 
@@ -45,9 +39,22 @@ namespace Voters.Models
 
         private string getItemsInVoteStr = "SELECT `item`.`id` FROM `voters`.`item` WHERE vote_id=@voteId";
 
-        private string updateVoteItemStr = "UPDATE `voters`.`vote` SET `topic`=@topic, `desc`=@desc, `vote_able`=@voteAble, `overdue_time`=@overDueTime, `multi_num`=@multiNum WHERE `id`=@voteId";
+        private string checkItemInVoteStr = "SELECT * FROM `item` WHERE vote_id=@voteId AND id=@itemId";
+
+        private string checkAccountStr = "SELECT id FROM voters.user where user_name=@userName AND password=@password";
 
         private string checkVoteBelongToUserStr = "SELECT * FROM voters.vote WHERE user_belong=@userId AND id=@voteId";
+
+        private string updateItenItemStr = "UPDATE `voters`.`item` SET `desc`=@desc, `desc_pic_url`=@descPicUrl WHERE `id`=@itemId"; 
+
+        private string updateVoteItemStr = "UPDATE `voters`.`vote` SET `topic`=@topic, `desc`=@desc, `vote_able`=@voteAble, `overdue_time`=@overDueTime, `multi_num`=@multiNum WHERE `id`=@voteId";
+
+        private string updateVoteScoreStr = "UPDATE `voters`.`item` SET `score`=@score WHERE `id`=@itemId";
+
+        private string deleteVoteStr = "DELETE FROM `voters`.`vote` WHERE `id`=@voteId";
+
+        private string deleteItemStr = "DELETE FROM `voters`.`item` WHERE `id`=@itemId";
+
 
         public bool InsertUser(UserItem item)
         {
@@ -445,5 +452,70 @@ namespace Voters.Models
             return false;
         }
 
+        public bool UpdateItenItem(ItemItem item)
+        {
+            //private string updateItenItemStr = "UPDATE `voters`.`item` SET `desc`=@desc, `desc_pic_url`=@descPicUrl WHERE `id`=@itemId";
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = updateItenItemStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@desc", item.Desc));
+            command.Parameters.Add(new MySqlParameter("@descPicUrl", item.DescPicUrl));
+            command.Parameters.Add(new MySqlParameter("@itemId", item.ItemId));
+
+            conn.Open();
+            try
+            {
+                int res = command.ExecuteNonQuery();
+                if (res <= 0)
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return true;
+
+
+        }
+
+        public bool DeleteVote(uint voteId)
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = deleteVoteStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@voteId", voteId));
+
+            conn.Open();
+            try
+            {
+                int res = command.ExecuteNonQuery();
+                if (res <= 0)
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return true;
+
+        }
     }
 }
+
+

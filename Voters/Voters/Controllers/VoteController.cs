@@ -40,7 +40,7 @@ namespace Voters.Controllers
             return new ObjectResult(json);
         }
 
-        // GET: api/Vote/5
+        // GET: api/Vote/5 分页
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -111,10 +111,5 @@ namespace Voters.Controllers
             return new ObjectResult(json);
         }
         
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
