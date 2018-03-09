@@ -15,7 +15,7 @@ namespace Voters.Controllers
     [EnableCors("AllowSpecificOrigin")]
     public class VoteController : Controller
     {
-        // GET: api/Vote
+        // GET: api/Vote?id=5
         [HttpGet]
         public IActionResult Get()
         {
@@ -88,10 +88,27 @@ namespace Voters.Controllers
             return new ObjectResult(json);
         }
         
-        // PUT: api/Vote/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // PUT: api/Vote/
+        [HttpPut]
+        public IActionResult Put([FromBody]VoteItem value)
         {
+            if (value == null)
+            {
+                return BadRequest();
+            }
+            DBAction injj = new DBAction();
+            var state = 0;
+
+            ICache cache = new ICache();
+            if ( cache.GetHash(value.Token, "session") == value.UserBelong.ToString() && injj.CheckVoteBelongToUser(value.UserBelong, value.VoteId) && injj.UpdateVoteItem(value))
+            {
+                state = 1;
+            }
+            var data = new {
+               State = state
+            };
+            var json = JObject.FromObject(data);
+            return new ObjectResult(json);
         }
         
         // DELETE: api/ApiWithActions/5

@@ -22,18 +22,33 @@ namespace Voters.Models
         }
 
         private string insertUserStr = "INSERT INTO `user` (`user_name`, `password`) VALUES (@userName,@password)";
+
         private string insertVoteStr = "INSERT INTO `vote` (`user_belong`, `topic`, `desc`, `vote_able`, `create_time`, `overdue_time`, `multi_num`)" +
                                         " VALUES (@userId, @topic, @desc, @voteAble, @createTime, @overDueTime, @multiNum)";
+
         private string insertItemStr = "INSERT INTO .`item` (`vote_id`, `desc`, `desc_pic_url`) VALUES (@voteId, @desc, @descPicUrl)";
+
         private string checkItemInVoteStr = "SELECT * FROM `item` WHERE vote_id=@voteId AND id=@itemId";
+
         private string checkAccountStr = "SELECT id FROM voters.user where user_name=@userName AND password=@password";
+
         private string getAllVoteCountStr = "SELECT COUNT(*) FROM `vote`";
+
         private string updateVoteScoreStr = "UPDATE `voters`.`item` SET `score`=@score WHERE `id`=@itemId";
+
         private string getLimitVoteItemsStr = "SELECT multi_num FROM vote WHERE id=@voteId";
+
         private string getItemInfoStr = "SELECT `item`.`id`, `item`.`vote_id`, `item`.`score`, `item`.`desc`,`item`.`desc_pic_url` FROM `voters`.`item` WHERE id=@itemId";
+
         private string getVoteItemStr = "SELECT `vote`.`id`, `vote`.`user_belong`, `vote`.`topic`, `vote`.`desc`, `vote`.`vote_able`,  `vote`.`create_time`, `vote`.`overdue_time`," +
                                         " `vote`.`multi_num` FROM `voters`.`vote` WHERE id=@voteId";
+
         private string getItemsInVoteStr = "SELECT `item`.`id` FROM `voters`.`item` WHERE vote_id=@voteId";
+
+        private string updateVoteItemStr = "UPDATE `voters`.`vote` SET `topic`=@topic, `desc`=@desc, `vote_able`=@voteAble, `overdue_time`=@overDueTime, `multi_num`=@multiNum WHERE `id`=@voteId";
+
+        private string checkVoteBelongToUserStr = "SELECT * FROM voters.vote WHERE user_belong=@userId AND id=@voteId";
+
         public bool InsertUser(UserItem item)
         {
             MySqlCommand command = new MySqlCommand
@@ -361,6 +376,73 @@ namespace Voters.Models
                 conn.Close();
             }
             return true;
+        }
+
+        public bool UpdateVoteItem(VoteItem item)
+        {
+        //private string updateVoteItemStr = "UPDATE `voters`.`vote` SET `topic`=@topic, `desc`=@desc, `vote_able`=@voteAble, `overdue_time`=@overDueTime, `multi_num`=@multiNum WHERE `id`=@voteId";
+        
+        MySqlCommand command = new MySqlCommand();
+            command.CommandText = updateVoteItemStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@topic", item.Topic));
+            command.Parameters.Add(new MySqlParameter("@desc", item.Desc));
+            command.Parameters.Add(new MySqlParameter("@voteAble", item.VoteAble));
+            command.Parameters.Add(new MySqlParameter("@overDueTime", item.OverdueTime));
+            command.Parameters.Add(new MySqlParameter("@multiNum", item.MultiNum));
+            command.Parameters.Add(new MySqlParameter("@voteId", item.VoteId));
+
+            conn.Open();
+            try
+            {
+                int res = command.ExecuteNonQuery();
+                if (res <= 0)
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return true;
+
+
+        }
+
+        public bool CheckVoteBelongToUser(uint userId, uint voteId)
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = checkVoteBelongToUserStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@voteId", voteId));
+            command.Parameters.Add(new MySqlParameter("@userId", userId));
+
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteReader();
+                if (res.Read())
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return false;
         }
 
     }
