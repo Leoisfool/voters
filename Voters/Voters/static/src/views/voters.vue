@@ -19,14 +19,14 @@
                 <el-dropdown-item command="home">首页</el-dropdown-item>
                 <el-dropdown-item command="personalProfile">个人资料</el-dropdown-item>
                 <el-dropdown-item command="personalProfile">创建我的投票</el-dropdown-item>
-                <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
+                <el-dropdown-item command="loginOut">退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
         </el-row>
       </el-header>
       <el-main>
-        <div class="naive">        
+        <div class="naive">
           <el-row>
             <el-col :span="1">
               <div class="grid-content">
@@ -100,7 +100,7 @@
                 </svg>
               </div>
             </el-col>
-            <el-col :span="1" offset="7">
+            <el-col :span="1" :offset="7">
               <div class="grid-content">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-binggun"></use>
@@ -142,7 +142,7 @@
                 </svg>
               </div>
             </el-col>
-            <el-col :span="1" offset="7">
+            <el-col :span="1" :offset="7">
               <div class="grid-content">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-binggun"></use>
@@ -255,7 +255,7 @@
               <span style="margin-left: 10px">{{ scope.row.OverdueTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column 
+          <el-table-column
             fixed="right"
             label="操作"
             width="220px"
@@ -284,85 +284,59 @@
 export default {
   data () {
     return {
-      Token: 'hello',
-      logOutURL: 'http://127.0.0.1:8080/webapi/logout',
       tableData: [{
-        "UserBelong":1,
-        "Topic":"USA大选",
-        "Desc":"2016美国总统大选,大家选出你支持的人，快快哦",
-        "VoteAble":1,
-        "MultiNum":1,
-        "OverdueTime":1520319941,
-        "CreateTime":1520309941,
-        "Token":"21BAD4931F81504C5AF7E7A7F793CEE2"
-      },{
-        "UserBelong":1,
-        "Topic":"USA大选",
-        "Desc":"2016美国总统大选,大家选出你支持的人，快快哦",
-        "VoteAble":1,
-        "MultiNum":1,
-        "OverdueTime":1520319941,
-        "CreateTime":1520309941,
-        "Token":"21BAD4931F81504C5AF7E7A7F793CEE2"
-      },{
-        "UserBelong":1,
-        "Topic":"USA大选",
-        "Desc":"2016美国总统大选,大家选出你支持的人，快快哦",
-        "VoteAble":1,
-        "MultiNum":1,
-        "OverdueTime":1520319941,
-        "CreateTime":1520309941,
-        "Token":"21BAD4931F81504C5AF7E7A7F793CEE2"
-      },{
-        "UserBelong":1,
-        "Topic":"USA大选",
-        "Desc":"2016美国总统大选,大家选出你支持的人，快快哦",
-        "VoteAble":1,
-        "MultiNum":1,
-        "OverdueTime":1520319941,
-        "CreateTime":1520309941,
-        "Token":"21BAD4931F81504C5AF7E7A7F793CEE2"
-      },{
-        "UserBelong":1,
-        "Topic":"USA大选",
-        "Desc":"2016美国总统大选,大家选出你支持的人，快快哦",
-        "VoteAble":1,
-        "MultiNum":1,
-        "OverdueTime":1520319941,
-        "CreateTime":1520309941,
-        "Token":"21BAD4931F81504C5AF7E7A7F793CEE2"
-      }]
+        'UserBelong': 1,
+        'Topic': 'USA大选',
+        'Desc': '2016美国总统大选,大家选出你支持的人，快快哦',
+        'VoteAble': 1,
+        'MultiNum': 1,
+        'OverdueTime': 1520319941,
+        'CreateTime': 1520309941,
+        'Token': '21BAD4931F81504C5AF7E7A7F793CEE2'
+      }],
+      TokenInfo: {
+        Token: '334968146E88D3E161E679F27137C04A'
+      }
     }
   },
   mounted () {
   },
   methods: {
-    loginOut () {
-      this.$http.post(this.logOutURL, this.Token).then(res => {
-        var stateCode = eval('(' + res.data + ')')
-        if (stateCode.StateCode) {
-          console.log('退出成功！')
-        } else {
-          console.error('出错啦！')
-        }
-      })
+    loginOut: function () {
+      console.log(this)
+      this.$http.post('http://localhost:12612/api/logout', this.TokenInfo)
+        .then((res) => {
+          debugger
+          if (res.data.State === 1) {
+            this.$message('退出成功！')
+            console.log('退出成功！')
+          } else {
+            this.$message('退出失败')
+            console.log('退出失败')
+          }
+        })
+        .catch((error) => {
+          debugger
+          console.log('error' + error)
+        })
     },
     handleCommand (command) {
-      if (command === 'home'){
+      console.log(this)
+      if (command === 'home') {
         this.$router.push('/#vote')
-      }else if (command === 'personalProfile') {
-        this.$message('click on item ' + command)        
-      }else if ( command === 'loginOut') {
-        this.$message('click on item ' + command)        
-      }else {
+      } else if (command === 'personalProfile') {
+        this.$message('click on item ' + command)
+      } else if (command === 'loginOut') {
+        this.loginOut()
+      } else {
         this.$message('error')
       }
     },
-    handleEdit(index, row) {
-      console.log(index, row);
+    handleEdit (index, row) {
+      console.log(index, row)
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    handleDelete (index, row) {
+      console.log(index, row)
     }
   }
 }

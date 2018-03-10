@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 export default {
   data () {
     return {
@@ -36,28 +35,29 @@ export default {
       Authorization: 'Basic YXBpOnBhc3N3b3Jk'
     }
   },
+  computed: {
+    Token () {
+      return this.$store.state.Token
+    },
+    UserId () {
+      return this.$store.state.UserId
+    }
+  },
   methods: {
     login: function () {
-      // var formData = qs.stringify(this.userInfo)
-      // this.$http
-      //   .post('http://127.0.0.1:8080/webapi/login_user', formData, {
-      //     headers: {
-      //       'Content-Type': 'application/x-www-form-urlencoded'
-      //     }
-      //   })
-      //   .then(res => {
-      //     if (res.data.StateCode) {
-      //       console.log('登录成功！')
-      //       this.loginOutToken = res.data.Token
-      //       console.log('Token' + res.data.Token)
-      //       debugger
-      //       let uxlogPath = '../uxlog/' + this.loginOutToken
-      //       this.$router.push(uxlogPath)
-      //     } else {
-      //       console.log('密码不正确或验证码不正确或者您已经登录')
-      //     }
-      //   })
-      this.$router.push('../voters/')
+      this.$http.post('http://localhost:12612/api/login', this.userInfo)
+        .then((res) => {
+          if (res.data.State === 1) {
+            this.$store.commit('setToken', res.data.Token)
+            this.$store.commit('setUserId', res.data.UserId)
+            this.$router.push({ path: '../voters/' })
+          } else {
+            console.log('密码不正确或验证码不正确或者您已经登录')
+          }
+        })
+        .catch((error) => {
+          console.log('error' + error)
+        })
     }
   }
 }

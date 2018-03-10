@@ -14,11 +14,17 @@ export default new Router({
     {
       path: '/',
       name: 'Main',
+      meta: {
+        title: 'Voters'
+      },
       component: Main
     },
     {
       path: '/voters',
       name: 'Voters',
+      meta: {
+        title: '投票管理'
+      },
       component: Voters
     },
     {
@@ -29,11 +35,17 @@ export default new Router({
         {
           path: 'login',
           name: 'login',
+          meta: {
+            title: '登录'
+          },
           component: Login
         },
         {
           path: 'register',
           name: 'register',
+          meta: {
+            title: '注册'
+          },
           component: Register
         }
       ]

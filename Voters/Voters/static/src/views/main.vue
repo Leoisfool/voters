@@ -5,9 +5,11 @@
         Voters
       </button>
       <el-breadcrumb separator="/" class="option">
-        <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: 'sign/login'}">登录</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: 'sign/register'}">注册</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: 'voters' }" v-show="showMyHost">我的主页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: 'sign/login'}" v-show="showLogin">登录</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: 'sign/register'}" v-show="showRegister">注册</el-breadcrumb-item>
+        <el-breadcrumb-item href="javascript:;" v-show="showLoginout">退出</el-breadcrumb-item>
       </el-breadcrumb>
       <div>
         <router-view></router-view>
@@ -86,6 +88,10 @@ export default {
   data () {
     return {
       msg: 'hello',
+      showLogin: true,
+      showRegister: true,
+      showMyHost: false,
+      showLoginout: false,
       tableData: [{
         id: 1,
         title: '你能接受同性恋吗？',
@@ -121,12 +127,27 @@ export default {
     jump () {
       this.$router.push('voters')
     },
-    init () {
-      axios.get('http://127.0.0.1:8080/webapi/login_user').then(function (res) {
-        console.log(res.statusCode)
-        // this.msg = res
-      }).catch(function () {
-        console.log('catch')
+    ifLogin () {
+      debugger
+      if(sessionStorage.Token){
+        this.$store.commit('setToken', sessionStorage.Token)
+        this.$store.commit('setUserId', sessionStorage.UserId)
+      }
+      this.$http.post('http://localhost:12612/api/iflogin',{
+        'Token': this.$store.state.Token
+      }).then (res => {
+        if(res.data.State === 1){
+          this.showLogin = false
+          this.showRegister = false
+          this.showLoginout = true
+          this.showMyHost = true
+        } else if (res.data.State === 0){
+          this.showLogin = true
+          this.showRegister = true
+          this.showLoginout = false
+          this.showMyHost = false
+          console.log('没有登录')
+        }
       })
     },
     handleClick (row) {
@@ -134,7 +155,7 @@ export default {
     }
   },
   beforeMount: function () {
-    // this.init()
+    this.ifLogin()
   },
   mounted: function () {
     axios.interceptors.request.use(config => {

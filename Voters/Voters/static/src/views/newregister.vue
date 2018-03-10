@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import qs from 'qs'
 export default {
   data () {
     return {
@@ -37,30 +35,19 @@ export default {
   },
   methods: {
     register: function () {
-      var formData = JSON.stringify(this.ruleForm)
-      axios.post('http://localhost:12612/api/register', formData,{
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then( res => {
-          console.log(res)
+      this.$http.post('http://localhost:12612/api/register', this.ruleForm)
+        .then((res) => {
+          debugger
+          if (res.data.State === 1) {
+            console.log('注册成功！')
+            this.$router.push({ path: 'login' })
+          } else {
+            console.log('密码不正确或验证码不正确或者您已经注册')
+          }
         })
-        .catch(error => {
-          console.log(error)
+        .catch((error) => {
+          console.log('error' + error)
         })
-      // this.$http
-      //   .post('http://localhost:12612/api/register', formData)
-      //   .then(res => {
-      //     var RES = eval('(' + res.data + ')')
-      //     if (RES.StateCode) {
-      //       console.log('注册成功！')
-      //       this.$router.push({ path: 'login' })
-      //     } else {
-      //       console.log('密码不正确或验证码不正确或者您已经注册')
-      //     }
-      //   })
-      // this.$router.push({ path: 'login' })
     }
     // getName () {
     //   axios.get('http://127.0.0.1:8080/webapi/check_username', {
