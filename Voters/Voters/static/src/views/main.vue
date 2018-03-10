@@ -9,7 +9,7 @@
         <el-breadcrumb-item :to="{ path: 'voters' }" v-show="showMyHost">我的主页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: 'sign/login'}" v-show="showLogin">登录</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: 'sign/register'}" v-show="showRegister">注册</el-breadcrumb-item>
-        <el-breadcrumb-item href="javascript:;" v-show="showLoginout">退出</el-breadcrumb-item>
+        <el-breadcrumb-item href="javascript:;" v-show="showLoginout" @click.native="loginOut">退出</el-breadcrumb-item>
       </el-breadcrumb>
       <div>
         <router-view></router-view>
@@ -152,6 +152,22 @@ export default {
     },
     handleClick (row) {
       console.log(row)
+    },
+    loginOut: function () {
+      this.$http.post('http://localhost:12612/api/logout', {
+        Token: sessionStorage.Token
+      })
+        .then((res) => {
+          if (res.data.State === 1) {
+            this.$message('退出成功！')
+          } else {
+            this.$message('退出失败')
+          }
+        })
+        .catch((error) => {
+          console.log('error' + error)
+        })
+      this.ifLogin()
     }
   },
   beforeMount: function () {

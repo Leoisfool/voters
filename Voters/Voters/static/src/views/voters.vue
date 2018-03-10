@@ -303,20 +303,17 @@ export default {
   },
   methods: {
     loginOut: function () {
-      console.log(this)
-      this.$http.post('http://localhost:12612/api/logout', this.TokenInfo)
+      this.$http.post('http://localhost:12612/api/logout', {
+        Token: sessionStorage.Token
+      })
         .then((res) => {
-          debugger
           if (res.data.State === 1) {
             this.$message('退出成功！')
-            console.log('退出成功！')
           } else {
             this.$message('退出失败')
-            console.log('退出失败')
           }
         })
         .catch((error) => {
-          debugger
           console.log('error' + error)
         })
     },
@@ -361,13 +358,13 @@ export default {
 .voter .headerLink .el-dropdown-link .icon{
   font-size: 1.9rem;
 }
-.el-main {
+.voter .el-main {
   min-height: 630px;
   background-color: #f1f1f1;
   color: #333;
   text-align: center;
 }
-.el-header, .el-footer {
+.voter .el-header, .el-footer {
   background-color: #B3C0D1;
   color: #333;
   text-align: center;
@@ -379,7 +376,7 @@ h2{
 }
 
 @media all and (min-width: 1000px) {
-  .el-table{
+  .voter .el-table{
     width: 60%;
     left: 40%;
     top: -280px;
@@ -387,10 +384,10 @@ h2{
 }
 
 @media all and (max-width: 1000px) {
-  .naive{
+  .voter .naive{
     display: none;
   }
-  .el-table{
+  .voter .el-table{
     width: 100%;
   }
 }
