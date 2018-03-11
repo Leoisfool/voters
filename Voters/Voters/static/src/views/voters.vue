@@ -18,7 +18,7 @@
                 <el-dropdown-item></el-dropdown-item>
                 <el-dropdown-item command="home">首页</el-dropdown-item>
                 <el-dropdown-item command="personalProfile">个人资料</el-dropdown-item>
-                <el-dropdown-item command="personalProfile">创建我的投票</el-dropdown-item>
+                <el-dropdown-item command="createVote">创建我的投票</el-dropdown-item>
                 <el-dropdown-item command="loginOut">退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -277,6 +277,63 @@
       </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
+
+    <!-- 创建投票 -->
+    <el-dialog
+      title="创建投票"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose">
+      <span>
+        <el-form ref="form" :model="voteMsg" label-width="80px">
+          <el-form-item label="投票主题">
+            <el-input v-model="voteMsg.Topic"></el-input>
+          </el-form-item>
+          <el-form-item label="投票详情">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="voteMsg.Desc">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="是否激活">
+            <el-tooltip :content="voteMsg.VoteAble == '1'?'激活':'未激活'" placement="top">
+              <el-switch
+                v-model="voteMsg.VoteAble"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0">
+              </el-switch>
+            </el-tooltip>
+          </el-form-item>
+          <el-form-item label="选项个数">
+            <el-input-number size="medium" :min="1" :max="4" v-model="voteMsg.MultiNum"></el-input-number>
+          </el-form-item>
+          <el-form-item label="截止时间">
+          </el-form-item>
+        </el-form>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="createVoteFun()">确定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 添加item -->
+    <el-dialog
+      title="创建选项"
+      :visible.sync="createItemVisible"
+      width="40%"
+      :before-close="handleClose">
+      <span>
+        <el-input v-model="itemMsg.Desc"></el-input>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="createItemVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createItemFun()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -288,18 +345,43 @@ export default {
         'UserBelong': 1,
         'Topic': 'USA大选',
         'Desc': '2016美国总统大选,大家选出你支持的人，快快哦',
-        'VoteAble': 1,
+        'VoteAble': '1',
         'MultiNum': 1,
         'OverdueTime': 1520319941,
         'CreateTime': 1520309941,
         'Token': '21BAD4931F81504C5AF7E7A7F793CEE2'
       }],
-      TokenInfo: {
-        Token: '334968146E88D3E161E679F27137C04A'
+      dialogVisible: false,
+      createItemVisible: false,
+      UserId: this.$store.state.UserId,
+      Token: this.$store.state.Token,
+      voteMsg: {
+        UserBelong: sessionStorage.UserId,
+        Topic: '',
+        Desc: '',
+        VoteAble: '',
+        MultiNum: '',
+        OverdueTime: '1520319941',
+        CreateTime: '1520309941',
+        Token: sessionStorage.Token
+      },
+      itemMsg: {
+        VoteId: '3',
+        Desc: '',
+        DescPicUrl: 'XXX',
+        Token: sessionStorage.Token,
+        UserId: sessionStorage.UserId
       }
     }
   },
-  mounted () {
+  computed: {
+    mySwitch () {
+      if (this.VoteAble) {
+        return '激活'
+      } else {
+        return '未激活'
+      }
+    }
   },
   methods: {
     loginOut: function () {
@@ -308,7 +390,8 @@ export default {
       })
         .then((res) => {
           if (res.data.State === 1) {
-            this.$message('退出成功！')
+            // this.$message('退出成功！')
+            this.$router.push('/')
           } else {
             this.$message('退出失败')
           }
@@ -318,13 +401,15 @@ export default {
         })
     },
     handleCommand (command) {
-      console.log(this)
       if (command === 'home') {
         this.$router.push('/#vote')
       } else if (command === 'personalProfile') {
         this.$message('click on item ' + command)
       } else if (command === 'loginOut') {
         this.loginOut()
+      } else if (command === 'createVote') {
+        // this.$message('click on item ' + command)
+        this.dialogVisible = true
       } else {
         this.$message('error')
       }
@@ -334,6 +419,32 @@ export default {
     },
     handleDelete (index, row) {
       console.log(index, row)
+    },
+    handleClose () {
+      this.dialogVisible = false
+    },
+    createVoteFun () {
+      this.$http.post('http://localhost:12612/api/vote', this.voteMsg)
+        .then(res => {
+          if (res.data.State === 1) {
+            console.log('创建成功')
+          } else {
+            console.log('创建失败')
+          }
+        })
+      this.dialogVisible = false
+      this.createItemVisible = true
+    },
+    createItemFun () {
+      this.$http.post('http://localhost:12612/api/item',this.itemMsg)
+        .then(res => {
+          if (res.data.State === 1) {
+            this.$message('添加成功')
+          } else {
+            this.$message('添加失败')
+          }
+        })
+      this.createItemVisible = false
     }
   }
 }

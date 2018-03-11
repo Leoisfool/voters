@@ -2,9 +2,9 @@
   <div class="sign">
     <div class="main">
       <h4 class="title">
-        <router-link to="login" @click.native="change('loginSelected')" :class="{'active': loginSelected}">登录</router-link>
+        <router-link to="login" @click.native="change('login')" :class="{'active': loginSelected}">登录</router-link>
         <b>.</b>
-        <router-link to="register" @click.native="change('registerSelected')" :class="{'active': registerSelected}">注册</router-link>
+        <router-link to="register" @click.native="change('register')" :class="{'active': registerSelected}">注册</router-link>
       </h4>
       <div class="container">
         <router-view></router-view>
@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data () {
     return {
@@ -34,27 +33,20 @@ export default {
     }
   },
   mounted: function () {
-    axios.interceptors.request.use(config => {
-      console.log('request init.')
-      return config
-    }, error => {
-      return Promise.reject(error)
-    })
-    axios.interceptors.response.use(response => {
-      console.log('response init.')
-    }, error => {
-      return Promise.reject(error)
-    })
+    this.change(sessionStorage.loginOrReg)
   },
   methods: {
     change: function (selected) {
-      console.log('sndkf')
-      if (selected === 'loginSelected') {
+      if (selected === 'login') {
         this.loginSelected = true
         this.registerSelected = false
+        this.$store.commit('setLoginOrReg', 'login')
+        sessionStorage.loginOrReg = 'login'
       } else {
         this.registerSelected = true
         this.loginSelected = false
+        this.$store.commit('setLoginOrReg', 'register')
+        sessionStorage.loginOrReg = 'register'
       }
     }
   }

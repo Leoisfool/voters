@@ -7,8 +7,8 @@
       <el-breadcrumb separator="/" class="option">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: 'voters' }" v-show="showMyHost">我的主页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: 'sign/login'}" v-show="showLogin">登录</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: 'sign/register'}" v-show="showRegister">注册</el-breadcrumb-item>
+        <el-breadcrumb-item @click.native="login()" v-show="showLogin">登录</el-breadcrumb-item>
+        <el-breadcrumb-item @click.native="register()" v-show="showRegister">注册</el-breadcrumb-item>
         <el-breadcrumb-item href="javascript:;" v-show="showLoginout" @click.native="loginOut">退出</el-breadcrumb-item>
       </el-breadcrumb>
       <div>
@@ -123,30 +123,45 @@ export default {
       }]
     }
   },
+  beforeMount: function () {
+    this.ifLogin()
+  },
+  mounted: function () {
+    axios.interceptors.request.use(config => {
+      console.log('request init.')
+      return config
+    }, error => {
+      return Promise.reject(error)
+    })
+    axios.interceptors.response.use(data => {
+      console.log('response init.')
+    }, error => {
+      return Promise.reject(error)
+    })
+  },
   methods: {
     jump () {
       this.$router.push('voters')
     },
     ifLogin () {
-      debugger
-      if(sessionStorage.Token){
+      if (sessionStorage.Token) {
         this.$store.commit('setToken', sessionStorage.Token)
         this.$store.commit('setUserId', sessionStorage.UserId)
       }
-      this.$http.post('http://localhost:12612/api/iflogin',{
+      this.$http.post('http://localhost:12612/api/iflogin', {
         'Token': this.$store.state.Token
-      }).then (res => {
-        if(res.data.State === 1){
+      }).then(res => {
+        if (res.data.State === 1) {
           this.showLogin = false
           this.showRegister = false
           this.showLoginout = true
           this.showMyHost = true
-        } else if (res.data.State === 0){
+        } else if (res.data.State === 0) {
           this.showLogin = true
           this.showRegister = true
           this.showLoginout = false
           this.showMyHost = false
-          console.log('没有登录')
+          // console.log('没有登录')
         }
       })
     },
@@ -168,23 +183,20 @@ export default {
           console.log('error' + error)
         })
       this.ifLogin()
+    },
+    login () {
+      this.$store.commit('setLoginOrReg', 'login')
+      this.$router.push('sign/login')
+    },
+    register () {
+      this.$store.commit('setLoginOrReg', 'register')
+      this.$router.push('sign/register')
     }
   },
-  beforeMount: function () {
-    this.ifLogin()
-  },
-  mounted: function () {
-    axios.interceptors.request.use(config => {
-      console.log('request init.')
-      return config
-    }, error => {
-      return Promise.reject(error)
-    })
-    axios.interceptors.response.use(data => {
-      console.log('response init.')
-    }, error => {
-      return Promise.reject(error)
-    })
+  computed: {
+    loginOrReg () {
+      return this.$store.state.loginOrReg
+    }
   },
   components: {
     'flip-box': {

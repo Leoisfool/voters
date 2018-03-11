@@ -28,7 +28,8 @@ router.beforeEach((to, from, next) => {
 const store = new Vuex.Store({
   state: {
     UserId: '',
-    Token: ''
+    Token: '',
+    loginOrReg: ''
   },
   mutations: {
     setUserId (state, userId) {
@@ -38,6 +39,9 @@ const store = new Vuex.Store({
     setToken (state, token) {
       state.Token = token
       sessionStorage.Token = state.Token
+    },
+    setLoginOrReg (state, value) {
+      state.loginOrReg = value
     }
   }
 })
