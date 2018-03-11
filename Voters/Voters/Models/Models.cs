@@ -53,5 +53,13 @@ namespace Voters.Models
     {
         public string Token { get; set; }
     }
+
+    public class SplitPageRes
+    {
+        public uint State;
+        public uint PageNum;
+        public uint SplitNum;
+        public VoteItem[] items;
+    }
 }
 

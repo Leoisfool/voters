@@ -55,6 +55,10 @@ namespace Voters.Models
 
         private string deleteItemStr = "DELETE FROM `voters`.`item` WHERE `id`=@itemId";
 
+        private string getLastInsertId = "select last_insert_id()";
+
+        private string getVoteFromNThToMThStr = "SELECT `vote`.`id`, `vote`.`user_belong`,`vote`.`topic`,`vote`.`desc`,`vote`.`vote_able`,`vote`.`create_time`,`vote`.`overdue_time`,`vote`.`multi_num`" +
+                                            " from vote limit @nTh, @mTh";
 
         public bool InsertUser(UserItem item)
         {
@@ -86,7 +90,7 @@ namespace Voters.Models
             return true;
         }
             
-        public bool InsertVote(VoteItem item)
+        public UInt64 InsertVote(VoteItem item)
         {
             MySqlCommand command = new MySqlCommand();
             command.CommandText = insertVoteStr;
@@ -106,19 +110,36 @@ namespace Voters.Models
                 int res = command.ExecuteNonQuery();
                 if (res <= 0)
                 {
-                    return false;
+                    conn.Close();
+                    return 0;
+
                 }
             }
             catch
             {
-                return false;
+                conn.Close();
+                return 0;
+            }
+
+            MySqlCommand command1 = new MySqlCommand();
+            command1.CommandText = getLastInsertId;
+            command1.CommandType = System.Data.CommandType.Text;
+            command1.Connection = conn;
+
+
+            try
+            {
+                UInt64 res = (UInt64)command1.ExecuteScalar();
+                return res;
+            }
+            catch
+            {
+                return 0;
             }
             finally
             {
                 conn.Close();
             }
-
-            return true;
         }
 
         public long GetAllVoteCount()
@@ -515,6 +536,55 @@ namespace Voters.Models
             return true;
 
         }
+
+        public bool GetVoteFromNThToMTh(ref SplitPageRes list, uint n, uint m, int size)
+        {
+            //private string getVoteFromNThToMThStr = "SELECT `vote`.`id`, `vote`.`user_belong`,`vote`.`topic`,`vote`.`desc`,`vote`.`vote_able`,`vote`.`create_time`,`vote`.`overdue_time`,`vote`.`multi_num`" +
+                                           // " from vote limit @nTh, @mTh";
+            if(m - n != size || n > m)
+            {
+                return false;
+            } 
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = getVoteFromNThToMThStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@nTh", n));
+            command.Parameters.Add(new MySqlParameter("@mTh", m));
+
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteReader();
+                int i = 0;
+                List<VoteItem> b = new List<VoteItem>();
+                while (res.Read() && i < size)
+                {
+                    VoteItem temp = new VoteItem();
+                    temp.VoteId = (uint)res[0];
+                    temp.UserBelong = (uint)res[1];
+                    temp.Topic = (string)res[2];
+                    temp.Desc = (string)res[3];
+                    temp.VoteAble = (Byte)res[4];
+                    temp.CreateTime = (uint)res[5];
+                    temp.OverdueTime = (uint)res[6];
+                    temp.MultiNum = (uint)res[7];
+                    ++i;
+                    b.Add(temp);
+                }
+                list.items = b.ToArray();
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return true;
+        }
+
     }
 }
 

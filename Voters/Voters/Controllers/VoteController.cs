@@ -42,23 +42,25 @@ namespace Voters.Controllers
 
         // GET: api/Vote/5 分页
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(uint id)
         {
             long count = ControllerTools.GetVoteCount();
             if (id <= 0 ||  (id - 1)*10 >= count)
             {
                 return BadRequest();
             }
-            var list = new VoteItem[10];
-            //for(int i = 0; i < 10; i++)
-            //{
-            //    var data = new VoteItem
-            //    {
-
-            //    };
-            //    list[i] = data;
-            //}
-            return new ObjectResult(1);
+            SplitPageRes res = new SplitPageRes();
+            
+            DBAction injj = new DBAction();
+            res.PageNum = id;
+            res.SplitNum = 10;
+            if (!injj.GetVoteFromNThToMTh(ref res, (id - 1) * 10, id * 10, 10))
+            {
+                res.State = 0;
+            }
+            res.State = 1;
+            var json = JObject.FromObject(res);
+            return new ObjectResult(json);
         }
         
         // POST: api/Vote
@@ -73,15 +75,16 @@ namespace Voters.Controllers
             var state = 0;
 
             ICache cache = new ICache();
-
-            if (cache.GetHash(value.Token, "session") != null && injj.InsertVote(value))
+            UInt64 voteId = 0;
+            if (cache.GetHash(value.Token, "session") != null && (voteId = injj.InsertVote(value)) > 0 )
             {
                 state = 1;
             }
 
             var data = new
             {
-                State = state
+                State = state,
+                VoteId = voteId
             };
 
             var json = JObject.FromObject(data);
