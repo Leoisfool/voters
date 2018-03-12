@@ -42,27 +42,27 @@
         style="width: 100%">
         <el-table-column
           fixed
-          prop="title"
+          prop="Topic"
           label="标题"
           width="250">
         </el-table-column>
         <el-table-column
-          prop="voteAble"
+          prop="VoteAble"
           label="投票开放与否"
           width="150">
         </el-table-column>
         <el-table-column
-          prop="sponsor"
+          prop="UserBelong"
           label="发起者"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="OverdueTime"
           label="过期时间"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="introduction"
+          prop="Desc"
           label="介绍"
           width="520">
         </el-table-column>
@@ -71,13 +71,48 @@
           label="操作"
           width="200">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="view(scope.row)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small">不感兴趣</el-button>
             <el-button type="text" size="small">关注</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <br>
+      <div class="block">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage3"
+          :page-size="10"
+          layout="prev, pager, next, jumper"
+          :total="totalVotes">
+        </el-pagination>
+      </div>
     </section>
+
+    <!-- 查看单个投票信息 -->
+    <el-dialog
+      :title="viewInfo.Topic"
+      :visible.sync="viewDialogVisible"
+      width="80%"
+      center>
+      <span>
+        <el-alert
+          :title="viewInfo.Desc"
+          type="success"
+          :closable="false">
+        </el-alert>
+        <el-checkbox-group 
+          v-model="voteInfo.checkeditems"
+          :min="viewInfo.MultiNum"
+          :max="viewInfo.MultiNum">
+          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+        </el-checkbox-group>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -92,54 +127,31 @@ export default {
       showRegister: true,
       showMyHost: false,
       showLoginout: false,
-      tableData: [{
-        id: 1,
-        title: '你能接受同性恋吗？',
-        sponsor: 'sponsor zl',
-        voteAble: '开放',
-        date: '2016-05-03',
-        introduction: '爱无关性别爱无关性别爱无关性别爱无关性别爱无关性别'
-      }, {
-        id: 2,
-        title: '你能接受同性恋吗？',
-        voteAble: '开放',
-        sponsor: 'sponsor zl',
-        date: '2016-05-03',
-        introduction: '爱无关性别'
-      }, {
-        id: 3,
-        title: '你能接受同性恋吗？',
-        sponsor: 'sponsor zl',
-        voteAble: '开放',
-        date: '2016-05-03',
-        introduction: '爱无关性别'
-      }, {
-        id: 4,
-        title: '你能接受同性恋吗？',
-        sponsor: 'sponsor zl',
-        voteAble: '开放',
-        date: '2016-05-03',
-        introduction: '爱无关性别'
-      }]
+      tableData: [],
+      currentPage3: 1,
+      totalVotes: '',
+      viewDialogVisible: false,
+      viewInfo: {
+        title: 'hahah'
+      },
+      voteInfo: {
+        checkeditems: []
+      }
     }
   },
   beforeMount: function () {
     this.ifLogin()
   },
-  mounted: function () {
-    axios.interceptors.request.use(config => {
-      console.log('request init.')
-      return config
-    }, error => {
-      return Promise.reject(error)
-    })
-    axios.interceptors.response.use(data => {
-      console.log('response init.')
-    }, error => {
-      return Promise.reject(error)
-    })
+  mounted () {
+    this.getPageNum()
+    this.handleCurrentChange(1)
   },
   methods: {
+    getPageNum () {
+      this.$http.get('http://localhost:12612/api/getpagenum').then(res => {
+        this.totalVotes = res.data.PageNum * 10
+      })
+    },
     jump () {
       this.$router.push('voters')
     },
@@ -165,9 +177,6 @@ export default {
         }
       })
     },
-    handleClick (row) {
-      console.log(row)
-    },
     loginOut: function () {
       this.$http.post('http://localhost:12612/api/logout', {
         Token: sessionStorage.Token
@@ -191,6 +200,29 @@ export default {
     register () {
       this.$store.commit('setLoginOrReg', 'register')
       this.$router.push('sign/register')
+    },
+    view (row) {
+      this.viewDialogVisible = true
+      this.viewInfo = row
+      console.log(row)
+    },
+    handleCurrentChange (val) {
+      // console.log(`当前页: ${val}`)
+      let url = 'http://localhost:12612/api/vote/' + val
+      this.$http.get(url).then(res => {
+        let response = res.data
+        if (response.State === 1) {
+          let table = response.items
+          table.forEach(item => {
+            if (item.VoteAble === 1) {
+              item.VoteAble = '投票ing'
+            } else {
+              item.VoteAble = '暂时不能投票'
+            }
+          })
+          this.tableData = table
+        }
+      })
     }
   },
   computed: {
