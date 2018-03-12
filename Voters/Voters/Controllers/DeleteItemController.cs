@@ -11,39 +11,41 @@ using Microsoft.AspNetCore.Cors;
 namespace Voters.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Logout")]
+    [Route("api/DeleteItem")]
     [EnableCors("AllowSpecificOrigin")]
-    public class LogoutController : Controller
-    {
-        // GET: api/Logout
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
-        // POST: api/Logout
+    public class DeleteItemController : Controller
+    {    
+        // POST: api/DeleteItem
         [HttpPost]
-        public IActionResult Post([FromBody]JObject value)
+        public IActionResult Post([FromBody] ItemItem value)
         {
             if (value == null)
             {
                 return BadRequest();
             }
-            var state = 0;
+            DBAction injj = new DBAction();
             ICache cache = new ICache();
-            if(cache.DelHash(value["Token"].ToString(), "session"))
+
+            string userId;
+            var state = 0;
+            if ((userId = cache.GetHash(value.Token, "session")) == null)
+            {
+                return BadRequest();
+            }
+            
+            if (injj.checkItemsInVote(value.VoteId, value.ItemId) && injj.CheckVoteBelongToUser(uint.Parse(userId), value.VoteId) && injj.DeleteItem(value.ItemId))
             {
                 state = 1;
             }
+
             var data = new
             {
-                State = state
+                State = state,
             };
 
             var json = JObject.FromObject(data);
             return new ObjectResult(json);
         }
-
     }
 }

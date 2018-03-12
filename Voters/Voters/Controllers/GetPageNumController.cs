@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace Voters.Controllers
 {
     [Produces("application/json")]
     [Route("api/GetPageNum")]
+    [EnableCors("AllowSpecificOrigin")]
+
     public class GetPageNumController : Controller
     {
         // GET: api/GetPageNum

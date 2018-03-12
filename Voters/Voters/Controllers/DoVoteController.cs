@@ -14,22 +14,8 @@ namespace Voters.Controllers
     [Route("api/DoVote")]
     [EnableCors("AllowSpecificOrigin")]
     public class DoVoteController : Controller
-    {
-        // GET: api/DoVote
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/DoVote/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-        
-        // POST: api/DoVote
+    {       
+       // POST: api/DoVote
         [HttpPost]
         public IActionResult Post([FromBody]DoVote value)
         {
@@ -83,18 +69,6 @@ namespace Voters.Controllers
                 State = 1,
             };
             return new ObjectResult(JObject.FromObject(data));
-        }
-        
-        // PUT: api/DoVote/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

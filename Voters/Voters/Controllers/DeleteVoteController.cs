@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Voters.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace Voters.Controllers
 {
     [Produces("application/json")]
     [Route("api/DeleteVote")]
+    [EnableCors("AllowSpecificOrigin")]
+
     public class DeleteVoteController : Controller
     {   
         // POST: api/DeleteVote

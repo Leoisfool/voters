@@ -97,10 +97,5 @@ namespace Voters.Controllers
             return new ObjectResult(json);
         }
         
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

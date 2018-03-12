@@ -14,6 +14,7 @@ namespace Voters.Controllers
     [Produces("application/json")]
     [Route("api/Register")]
     [EnableCors("AllowSpecificOrigin")]
+
     public class RegisterController : Controller
     {
         private readonly ILogger _logger;

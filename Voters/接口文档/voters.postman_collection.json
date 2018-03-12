@@ -37,7 +37,7 @@
 			},
 			"response": [
 				{
-					"id": "2aa3685a-6b1f-4f80-8a34-692830fdee28",
+					"id": "ece6f2c6-709d-48c7-b7f8-1870edbf3bdf",
 					"name": "Register",
 					"originalRequest": {
 						"method": "POST",
@@ -118,7 +118,7 @@
 			},
 			"response": [
 				{
-					"id": "9299b200-00b1-4b56-bc9e-31a73999725b",
+					"id": "687ab3d5-c412-4a9a-8f68-0148ec61c2e2",
 					"name": "CreateVote",
 					"originalRequest": {
 						"method": "POST",
@@ -200,7 +200,7 @@
 			},
 			"response": [
 				{
-					"id": "70c66201-4314-49ea-86ae-37dc40fd7a5c",
+					"id": "ac68222a-9d17-437c-98e5-93ca18a206f3",
 					"name": "CreateItem",
 					"originalRequest": {
 						"method": "POST",
@@ -264,6 +264,25 @@
 			]
 		},
 		{
+			"name": "Iflogin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Token\":\"334968146E88D3E161E679F27137C04A\"\n}"
+				},
+				"url": "http://localhost:12612/api/iflogin",
+				"description": null
+			},
+			"response": []
+		},
+		{
 			"name": "Login",
 			"request": {
 				"method": "POST",
@@ -282,7 +301,7 @@
 			},
 			"response": [
 				{
-					"id": "35d9c497-05ae-4fc5-b4c3-8a94263a92a3",
+					"id": "c23cf59a-c783-4c19-ac84-2479fab0dc2f",
 					"name": "Login",
 					"originalRequest": {
 						"method": "POST",
@@ -364,7 +383,7 @@
 			},
 			"response": [
 				{
-					"id": "fb367e47-c35d-4b47-af10-c2242620d298",
+					"id": "5db96c38-fa58-4595-ac83-f4f18e41b2ee",
 					"name": "logout",
 					"originalRequest": {
 						"method": "POST",
@@ -445,7 +464,7 @@
 			},
 			"response": [
 				{
-					"id": "2c131906-35bf-4513-899c-e375e51a6f5d",
+					"id": "6ab82a98-c342-4591-943a-dc5f1617dc4c",
 					"name": "dovote",
 					"originalRequest": {
 						"method": "POST",
@@ -541,25 +560,6 @@
 			"response": []
 		},
 		{
-			"name": "Iflogin",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"Token\":\"334968146E88D3E161E679F27137C04A\"\n}"
-				},
-				"url": "http://localhost:12612/api/iflogin",
-				"description": null
-			},
-			"response": []
-		},
-		{
 			"name": "GetVoteInfo",
 			"request": {
 				"method": "GET",
@@ -591,7 +591,7 @@
 			},
 			"response": [
 				{
-					"id": "06e6c4af-0ccd-4815-946a-60ebadc36e43",
+					"id": "93bd134a-15cb-432a-894a-d38e25af0df0",
 					"name": "GetVoteInfo",
 					"originalRequest": {
 						"method": "GET",
@@ -667,41 +667,23 @@
 			]
 		},
 		{
-			"name": "UpdateVote",
+			"name": "GetSplitPage",
 			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"VoteId\": 3,\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"日本大选\",\r\n\t\"Desc\":\"2019法国总统大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":0,\r\n\t\"MultiNum\":2,\r\n\t\"OverdueTime\":1520310000,\r\n\t\"Token\":\"A67C41502DE9ACFABE216EF38776F55E\"\r\n}"
-				},
-				"url": "http://localhost:12612/api/vote",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": "http://localhost:12612/api/vote/2",
 				"description": ""
 			},
 			"response": [
 				{
-					"id": "70f587c7-c38c-45b2-978c-9007dd74afe7",
-					"name": "UpdateVote",
+					"id": "d4bdc71b-178e-41d1-a99b-175bee5a2b29",
+					"name": "GetSplitPage",
 					"originalRequest": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"disabled": false
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\t\"VoteId\": 3,\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"日本大选\",\r\n\t\"Desc\":\"2019法国总统大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":0,\r\n\t\"MultiNum\":2,\r\n\t\"OverdueTime\":1520310000,\r\n\t\"Token\":\"A67C41502DE9ACFABE216EF38776F55E\"\r\n}"
-						},
-						"url": "http://localhost:12612/api/vote"
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": "http://localhost:12612/api/vote/2"
 					},
 					"status": "OK",
 					"code": 200,
@@ -715,7 +697,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 09 Mar 2018 08:17:55 GMT",
+							"value": "Sun, 11 Mar 2018 01:21:43 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -739,15 +721,26 @@
 						},
 						{
 							"key": "X-SourceFiles",
-							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcdm90ZQ==?=",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcdm90ZVwy?=",
 							"name": "X-SourceFiles",
 							"description": "Custom header"
 						}
 					],
 					"cookie": [],
-					"body": "{\"State\":1}"
+					"body": "{\"State\":1,\"PageNum\":2,\"SplitNum\":10,\"items\":[{\"VoteId\":17,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":18,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":19,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":20,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":21,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":22,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null}]}"
 				}
 			]
+		},
+		{
+			"name": "GetPageNum",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": "http://localhost:12612/api/getpagenum",
+				"description": ""
+			},
+			"response": []
 		},
 		{
 			"name": "UpdateItem",
@@ -768,7 +761,7 @@
 			},
 			"response": [
 				{
-					"id": "2838797e-0faa-4a2a-a4eb-7f53764a6aa5",
+					"id": "f692afe0-792a-4dde-8b25-f5391d233294",
 					"name": "UpdateItem",
 					"originalRequest": {
 						"method": "PUT",
@@ -833,6 +826,89 @@
 			]
 		},
 		{
+			"name": "UpdateVote",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"VoteId\": 3,\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"日本大选\",\r\n\t\"Desc\":\"2019法国总统大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":0,\r\n\t\"MultiNum\":2,\r\n\t\"OverdueTime\":1520310000,\r\n\t\"Token\":\"A67C41502DE9ACFABE216EF38776F55E\"\r\n}"
+				},
+				"url": "http://localhost:12612/api/vote",
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "b2ed4028-7dec-4358-afb6-2649ca45b64d",
+					"name": "UpdateVote",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"VoteId\": 3,\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"日本大选\",\r\n\t\"Desc\":\"2019法国总统大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":0,\r\n\t\"MultiNum\":2,\r\n\t\"OverdueTime\":1520310000,\r\n\t\"Token\":\"A67C41502DE9ACFABE216EF38776F55E\"\r\n}"
+						},
+						"url": "http://localhost:12612/api/vote"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 09 Mar 2018 08:17:55 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcdm90ZQ==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1}"
+				}
+			]
+		},
+		{
 			"name": "Dletevote",
 			"request": {
 				"method": "POST",
@@ -851,7 +927,7 @@
 			},
 			"response": [
 				{
-					"id": "6b1894ee-490b-4d0f-82d4-76d570bebe44",
+					"id": "64a23701-bcde-4b36-99a7-bfacdd528253",
 					"name": "Dletevote",
 					"originalRequest": {
 						"method": "POST",
@@ -916,23 +992,41 @@
 			]
 		},
 		{
-			"name": "GetSplitPage",
+			"name": "DeleteItem",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": "http://localhost:12612/api/vote/2",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"VoteId\":3,\n    \"ItemId\":6,\n    \"Token\": \"5B2000BCCEB77BC648177100D77A663E\"\n}"
+				},
+				"url": "http://localhost:12612/api/deleteitem",
 				"description": ""
 			},
 			"response": [
 				{
-					"id": "79c404a7-9938-4f2d-a889-47befaa390ee",
-					"name": "GetSplitPage",
+					"id": "27d7b99f-7286-4646-85d6-29f9b121fa80",
+					"name": "DeleteItem",
 					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": "http://localhost:12612/api/vote/2"
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"VoteId\":3,\n    \"ItemId\":6,\n    \"Token\": \"5B2000BCCEB77BC648177100D77A663E\"\n}"
+						},
+						"url": "http://localhost:12612/api/deleteitem"
 					},
 					"status": "OK",
 					"code": 200,
@@ -946,7 +1040,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 11 Mar 2018 01:21:43 GMT",
+							"value": "Mon, 12 Mar 2018 05:21:12 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -970,26 +1064,15 @@
 						},
 						{
 							"key": "X-SourceFiles",
-							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcdm90ZVwy?=",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcZGVsZXRlaXRlbQ==?=",
 							"name": "X-SourceFiles",
 							"description": "Custom header"
 						}
 					],
 					"cookie": [],
-					"body": "{\"State\":1,\"PageNum\":2,\"SplitNum\":10,\"items\":[{\"VoteId\":17,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":18,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":19,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":20,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":21,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":22,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null}]}"
+					"body": "{\"State\":0}"
 				}
 			]
-		},
-		{
-			"name": "GetPageNum",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": "http://localhost:12612/api/getpagenum",
-				"description": ""
-			},
-			"response": []
 		}
 	]
 }

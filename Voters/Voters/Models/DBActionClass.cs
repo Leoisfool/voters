@@ -228,7 +228,7 @@ namespace Voters.Models
             return -1;
         }
 
-        public bool checkItemsInVote(long voteId, long itemId)
+        public bool checkItemsInVote(uint voteId, uint itemId)
         {
             MySqlCommand command = new MySqlCommand();
             command.CommandText = checkItemInVoteStr;
@@ -582,6 +582,35 @@ namespace Voters.Models
             {
                 conn.Close();
             }
+            return true;
+        }
+
+        public bool DeleteItem(uint itemId)
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = deleteItemStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@itemId", itemId));
+
+            conn.Open();
+            try
+            {
+                int res = command.ExecuteNonQuery();
+                if (res <= 0)
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return true;
         }
 
