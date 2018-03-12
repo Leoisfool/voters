@@ -41,6 +41,7 @@ export default {
           if (res.data.State === 1) {
             console.log('注册成功！')
             this.$router.push({ path: 'login' })
+            this.$parent.change('login')
           } else {
             console.log('密码不正确或验证码不正确或者您已经注册')
           }

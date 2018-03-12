@@ -436,7 +436,7 @@ export default {
       this.createItemVisible = true
     },
     createItemFun () {
-      this.$http.post('http://localhost:12612/api/item',this.itemMsg)
+      this.$http.post('http://localhost:12612/api/item', this.itemMsg)
         .then(res => {
           if (res.data.State === 1) {
             this.$message('添加成功')
