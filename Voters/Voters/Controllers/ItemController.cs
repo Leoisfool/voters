@@ -24,7 +24,15 @@ namespace Voters.Controllers
             DBAction db = new DBAction();
             int res = (int)cache.GetZsetValue("score", id);
             ItemItem item = new ItemItem();
-            db.GetItemInfo(uint.Parse(id),ref item);
+            try
+            {
+                item.ItemId = uint.Parse(id);
+                db.GetItemInfo(uint.Parse(id), ref item);
+            }
+            catch
+            {
+                return BadRequest();
+            }
             item.Score = res;
             var json = JObject.FromObject(item);
             return new ObjectResult(json);
@@ -50,12 +58,24 @@ namespace Voters.Controllers
             item.UserId = value.UserId;
             item.Token = value.Token;
 
-            
-
-            if (cache.GetHash(item.Token, "session") != null && injj.InsertItem(item))
+            string userId;
+            if ((userId = cache.GetHash(value.Token, "session")) == null)
             {
-                state = 1;
+                return BadRequest();
             }
+
+            try
+            {
+                if (injj.CheckVoteBelongToUser(uint.Parse(userId), value.VoteId) && injj.InsertItem(item))
+                {
+                    state = 1;
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
 
             var data = new
             {
@@ -82,11 +102,19 @@ namespace Voters.Controllers
             if((userId = cache.GetHash(value.Token, "session")) == null)
             {
                 return BadRequest();
-            } 
-            if (injj.CheckVoteBelongToUser(uint.Parse(userId) ,value.VoteId) && injj.checkItemsInVote(value.VoteId, value.ItemId) &&  injj.UpdateItenItem(value))
-            {
-                state = 1;
             }
+            try
+            {
+                if (injj.CheckVoteBelongToUser(uint.Parse(userId), value.VoteId) && injj.checkItemsInVote(value.VoteId, value.ItemId) && injj.UpdateItenItem(value))
+                {
+                    state = 1;
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
 
             var data = new
             {

@@ -60,6 +60,13 @@ namespace Voters.Models
         private string getVoteFromNThToMThStr = "SELECT `vote`.`id`, `vote`.`user_belong`,`vote`.`topic`,`vote`.`desc`,`vote`.`vote_able`,`vote`.`create_time`,`vote`.`overdue_time`,`vote`.`multi_num`" +
                                             " from vote limit @nTh, @mTh";
 
+        private string getUserVoteCountStr = "SELECT COUNT(*) FROM `vote` WHERE user_belong=@userId";
+
+        private string getUserVoteFromNThToMThStr = "SELECT `vote`.`id`, `vote`.`user_belong`,`vote`.`topic`,`vote`.`desc`,`vote`.`vote_able`,`vote`.`create_time`,`vote`.`overdue_time`,`vote`.`multi_num`" +
+                                            " from vote WHERE user_belong=@userId limit @nTh, @mTh";
+
+        private string getUserNameFromUserIdStr = "SELECT user_name FROM voters.user WHERE id=@userId";
+
         public bool InsertUser(UserItem item)
         {
             MySqlCommand command = new MySqlCommand
@@ -164,6 +171,31 @@ namespace Voters.Models
                 conn.Close();
             }
             
+        }
+
+        public long GetUserVoteCount(uint userId)
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = getUserVoteCountStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@userId", userId));
+
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteScalar();
+                return (long)res;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
         }
 
         public bool InsertItem(ItemItem item)
@@ -585,6 +617,54 @@ namespace Voters.Models
             return true;
         }
 
+        public bool GetVoteFromNThToMTh(ref SplitPageRes list, uint n, uint m, int size, uint userId)
+        {
+            if (m - n != size || n > m)
+            {
+                return false;
+            }
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = getUserVoteFromNThToMThStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@nTh", n));
+            command.Parameters.Add(new MySqlParameter("@mTh", m));
+            command.Parameters.Add(new MySqlParameter("@userId", userId));
+
+
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteReader();
+                int i = 0;
+                List<VoteItem> b = new List<VoteItem>();
+                while (res.Read() && i < size)
+                {
+                    VoteItem temp = new VoteItem();
+                    temp.VoteId = (uint)res[0];
+                    temp.UserBelong = (uint)res[1];
+                    temp.Topic = (string)res[2];
+                    temp.Desc = (string)res[3];
+                    temp.VoteAble = (Byte)res[4];
+                    temp.CreateTime = (uint)res[5];
+                    temp.OverdueTime = (uint)res[6];
+                    temp.MultiNum = (uint)res[7];
+                    ++i;
+                    b.Add(temp);
+                }
+                list.items = b.ToArray();
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return true;
+        }
+
         public bool DeleteItem(uint itemId)
         {
             MySqlCommand command = new MySqlCommand();
@@ -614,6 +694,28 @@ namespace Voters.Models
             return true;
         }
 
+        public string GetUserNameFromUserId(uint userId)
+        {
+            MySqlCommand command = new MySqlCommand();
+            command.CommandText = getUserNameFromUserIdStr;
+            command.CommandType = System.Data.CommandType.Text;
+            command.Connection = conn;
+            command.Parameters.Add(new MySqlParameter("@userId", userId));
+            conn.Open();
+            try
+            {
+                var res = command.ExecuteScalar();
+                return (string)res;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }
 

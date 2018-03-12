@@ -44,20 +44,56 @@ namespace Voters.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(uint id)
         {
-            long count = ControllerTools.GetVoteCount();
+            string cc = Request.Query["userid"];
+
+            DBAction injj = new DBAction();
+            long count;
+            if(cc == null)
+            {
+                count = injj.GetAllVoteCount();
+            }
+            else
+            {
+                try
+                {
+                    count = injj.GetUserVoteCount(uint.Parse(cc));
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
             if (id <= 0 ||  (id - 1)*10 >= count)
             {
                 return BadRequest();
             }
             SplitPageRes res = new SplitPageRes();
             
-            DBAction injj = new DBAction();
+            
             res.PageNum = id;
             res.SplitNum = 10;
-            if (!injj.GetVoteFromNThToMTh(ref res, (id - 1) * 10, id * 10, 10))
+            if(cc == null)
             {
-                res.State = 0;
+                if (!injj.GetVoteFromNThToMTh(ref res, (id - 1) * 10, id * 10, 10))
+                {
+                    res.State = 0;
+                }
             }
+            else
+            {
+                try
+                {
+                    if (!injj.GetVoteFromNThToMTh(ref res, (id - 1) * 10, id * 10, 10, uint.Parse(cc)))
+                    {
+                        res.State = 0;
+                    }
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
+            
             res.State = 1;
             var json = JObject.FromObject(res);
             return new ObjectResult(json);

@@ -37,7 +37,7 @@
 			},
 			"response": [
 				{
-					"id": "ece6f2c6-709d-48c7-b7f8-1870edbf3bdf",
+					"id": "4d3def20-5a9d-4210-b215-6ec69c99edc6",
 					"name": "Register",
 					"originalRequest": {
 						"method": "POST",
@@ -111,14 +111,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"日本大选\",\r\n\t\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":1,\r\n\t\"MultiNum\":1,\r\n\t\"OverdueTime\":1520319941,\r\n\t\"CreateTime\":1520309941,\r\n\t\"Token\":\"6727147C0897EBEF3BCF79E095F2BF7\"\r\n}"
+					"raw": "{\r\n\t\"UserBelong\":1,\r\n\t\"Topic\":\"日本大选\",\r\n\t\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\r\n\t\"VoteAble\":1,\r\n\t\"MultiNum\":1,\r\n\t\"OverdueTime\":1520319941,\r\n\t\"CreateTime\":1520309941,\r\n\t\"Token\":\"55C8B3F5E0EADBAC8BCD54C2EF0E8DBF\"\r\n}"
 				},
 				"url": "http://localhost:12612/api/vote",
 				"description": null
 			},
 			"response": [
 				{
-					"id": "687ab3d5-c412-4a9a-8f68-0148ec61c2e2",
+					"id": "047c869e-13c5-41e9-b4f2-b71bdc599b62",
 					"name": "CreateVote",
 					"originalRequest": {
 						"method": "POST",
@@ -193,14 +193,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"VoteId\":5,\r\n\t\"Desc\":\"希拉里\",\r\n\t\"DescPicUrl\":\"XXXX\",\r\n\t\"Token\":\"21BAD4931F81504C5AF7E7A7F793CEE2\",\r\n\t\"UserId\":3\r\n}"
+					"raw": "{\r\n\t\"VoteId\":22,\r\n\t\"Desc\":\"希拉里\",\r\n\t\"DescPicUrl\":\"XXXX\",\r\n\t\"Token\":\"55C8B3F5E0EADBAC8BCD54C2EF0E8DBF\"\r\n}"
 				},
 				"url": "http://localhost:12612/api/item",
 				"description": null
 			},
 			"response": [
 				{
-					"id": "ac68222a-9d17-437c-98e5-93ca18a206f3",
+					"id": "dcf1efed-49f9-4c8a-8b12-82b7b36c09d8",
 					"name": "CreateItem",
 					"originalRequest": {
 						"method": "POST",
@@ -301,7 +301,7 @@
 			},
 			"response": [
 				{
-					"id": "c23cf59a-c783-4c19-ac84-2479fab0dc2f",
+					"id": "3dc7bc06-eb4d-4096-97ca-b6f40fcf2ce0",
 					"name": "Login",
 					"originalRequest": {
 						"method": "POST",
@@ -383,7 +383,7 @@
 			},
 			"response": [
 				{
-					"id": "5db96c38-fa58-4595-ac83-f4f18e41b2ee",
+					"id": "b3cb4793-9579-48ab-ac94-93afb836efb5",
 					"name": "logout",
 					"originalRequest": {
 						"method": "POST",
@@ -464,7 +464,7 @@
 			},
 			"response": [
 				{
-					"id": "6ab82a98-c342-4591-943a-dc5f1617dc4c",
+					"id": "8c955d9d-85f8-4cf1-8ae1-6be7b8f13fd2",
 					"name": "dovote",
 					"originalRequest": {
 						"method": "POST",
@@ -537,7 +537,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:12612/api/item?ItemId=5",
+					"raw": "http://localhost:12612/api/item?ItemId=7",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -550,14 +550,89 @@
 					"query": [
 						{
 							"key": "ItemId",
-							"value": "5",
+							"value": "7",
 							"equals": true
 						}
 					]
 				},
 				"description": null
 			},
-			"response": []
+			"response": [
+				{
+					"id": "c37ebf37-6e12-47cd-b6f8-7bba11c15e4f",
+					"name": "GetItemInfo",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:12612/api/item?ItemId=7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "12612",
+							"path": [
+								"api",
+								"item"
+							],
+							"query": [
+								{
+									"key": "ItemId",
+									"value": "7",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Mar 2018 06:01:21 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcaXRlbQ==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"ItemId\":7,\"VoteId\":3,\"Score\":17,\"DescPicUrl\":\"XXXX\",\"Desc\":\"特朗普\",\"Token\":null,\"UserId\":0}"
+				}
+			]
 		},
 		{
 			"name": "GetVoteInfo",
@@ -569,7 +644,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:12612/api/vote?id=5",
+					"raw": "http://localhost:12612/api/vote?id=6",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -582,7 +657,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "5",
+							"value": "6",
 							"equals": true
 						}
 					]
@@ -591,7 +666,7 @@
 			},
 			"response": [
 				{
-					"id": "93bd134a-15cb-432a-894a-d38e25af0df0",
+					"id": "e90aa1cf-63b7-4141-a56d-26e295a682ea",
 					"name": "GetVoteInfo",
 					"originalRequest": {
 						"method": "GET",
@@ -672,12 +747,12 @@
 				"method": "GET",
 				"header": [],
 				"body": {},
-				"url": "http://localhost:12612/api/vote/2",
+				"url": "http://localhost:12612/api/vote/1",
 				"description": ""
 			},
 			"response": [
 				{
-					"id": "d4bdc71b-178e-41d1-a99b-175bee5a2b29",
+					"id": "e5721360-c76d-4705-a272-36057c82942f",
 					"name": "GetSplitPage",
 					"originalRequest": {
 						"method": "GET",
@@ -740,7 +815,61 @@
 				"url": "http://localhost:12612/api/getpagenum",
 				"description": ""
 			},
-			"response": []
+			"response": [
+				{
+					"id": "8803fa1a-d1cd-4c30-a872-5d62c9e47b06",
+					"name": "GetPageNum",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": "http://localhost:12612/api/getpagenum"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 11 Mar 2018 01:34:59 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcZ2V0cGFnZW51bQ==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"PageNum\":2}"
+				}
+			]
 		},
 		{
 			"name": "UpdateItem",
@@ -761,7 +890,7 @@
 			},
 			"response": [
 				{
-					"id": "f692afe0-792a-4dde-8b25-f5391d233294",
+					"id": "ca74a9d5-de4e-494f-8a6b-0c6159680666",
 					"name": "UpdateItem",
 					"originalRequest": {
 						"method": "PUT",
@@ -844,7 +973,7 @@
 			},
 			"response": [
 				{
-					"id": "b2ed4028-7dec-4358-afb6-2649ca45b64d",
+					"id": "2da5b126-245a-4502-b8f7-d0b5c2610526",
 					"name": "UpdateVote",
 					"originalRequest": {
 						"method": "PUT",
@@ -927,7 +1056,7 @@
 			},
 			"response": [
 				{
-					"id": "64a23701-bcde-4b36-99a7-bfacdd528253",
+					"id": "ea0690e4-c511-4fc6-a5c4-1b44ed936f09",
 					"name": "Dletevote",
 					"originalRequest": {
 						"method": "POST",
@@ -1010,7 +1139,7 @@
 			},
 			"response": [
 				{
-					"id": "27d7b99f-7286-4646-85d6-29f9b121fa80",
+					"id": "b2cc0d76-de54-4798-b724-18213e972200",
 					"name": "DeleteItem",
 					"originalRequest": {
 						"method": "POST",
@@ -1071,6 +1200,311 @@
 					],
 					"cookie": [],
 					"body": "{\"State\":0}"
+				}
+			]
+		},
+		{
+			"name": "GetOnesVotes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:12612/api/vote/1?userId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "12612",
+					"path": [
+						"api",
+						"vote",
+						"1"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "2",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "81ee821c-7807-415e-a509-cc8505727951",
+					"name": "GetOnesVotes",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:12612/api/vote/1?userId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "12612",
+							"path": [
+								"api",
+								"vote",
+								"1"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Mar 2018 05:19:45 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcdm90ZVwx?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"State\":1,\"PageNum\":1,\"SplitNum\":10,\"items\":[{\"VoteId\":3,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2019法国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520310000,\"CreateTime\":1520309941,\"VoteAble\":0,\"MultiNum\":2,\"Token\":null,\"ItemIds\":null},{\"VoteId\":4,\"UserBelong\":1,\"Topic\":\"大选\",\"Desc\":\"美国大选\",\"OverdueTime\":1111111,\"CreateTime\":111111,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":6,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":7,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":8,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":9,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":10,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":14,\"UserBelong\":1,\"Topic\":\"USA大选\",\"Desc\":\"2016美国总统大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":15,\"UserBelong\":1,\"Topic\":\"aa\",\"Desc\":\"vvvv\",\"OverdueTime\":0,\"CreateTime\":0,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null},{\"VoteId\":16,\"UserBelong\":1,\"Topic\":\"日本大选\",\"Desc\":\"2016日本首相大选,大家选出你支持的人，快快哦\",\"OverdueTime\":1520319941,\"CreateTime\":1520309941,\"VoteAble\":1,\"MultiNum\":1,\"Token\":null,\"ItemIds\":null}]}"
+				}
+			]
+		},
+		{
+			"name": "GetOnesPageNum",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:12612/api/getpagenum?userid=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "12612",
+					"path": [
+						"api",
+						"getpagenum"
+					],
+					"query": [
+						{
+							"key": "userid",
+							"value": "2",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "425e995e-deea-4ee5-a88e-f8bbd146261f",
+					"name": "GetOnesPageNum",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:12612/api/getpagenum?userid=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "12612",
+							"path": [
+								"api",
+								"getpagenum"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "2",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Mar 2018 05:31:00 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcZ2V0cGFnZW51bQ==?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"PageNum\":1}"
+				}
+			]
+		},
+		{
+			"name": "GetUserNameByUserId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:12612/api/getusername?userid=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "12612",
+					"path": [
+						"api",
+						"getusername"
+					],
+					"query": [
+						{
+							"key": "userid",
+							"value": "1",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "507f6324-580f-479d-a7d0-f7cf24e9dcec",
+					"name": "GetUserNameByUserId",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:12612/api/getusername?userid=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "12612",
+							"path": [
+								"api",
+								"getusername"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "1",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Mar 2018 05:44:25 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcVm90ZXJzXFZvdGVyc1xhcGlcZ2V0dXNlcm5hbWU=?=",
+							"name": "X-SourceFiles",
+							"description": "Custom header"
+						}
+					],
+					"cookie": [],
+					"body": "{\"UserName\":\"lyx\"}"
 				}
 			]
 		}

@@ -33,10 +33,18 @@ namespace Voters.Controllers
             {
                 return BadRequest();
             }
-            if (injj.CheckVoteBelongToUser(uint.Parse(userId), value.VoteId) && injj.DeleteVote(value.VoteId))
+            try
             {
-                state = 1;
+                if (injj.CheckVoteBelongToUser(uint.Parse(userId), value.VoteId) && injj.DeleteVote(value.VoteId))
+                {
+                    state = 1;
+                }
             }
+            catch
+            {
+                return BadRequest();
+            }
+            
 
             var data = new
             {

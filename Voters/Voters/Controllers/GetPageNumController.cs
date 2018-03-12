@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Cors;
+using Voters.Models;
 
 namespace Voters.Controllers
 {
@@ -19,7 +20,25 @@ namespace Voters.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            long count = ControllerTools.GetVoteCount();
+            string cc = Request.Query["userid"];
+            long count;
+            DBAction db = new DBAction();
+            if (cc == null)
+            {
+                count = db.GetAllVoteCount();
+            }
+            else
+            {
+                try
+                {
+                    count = db.GetUserVoteCount(uint.Parse(cc));
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
+
             long pageNum = 0;
             if (count >= 0)
             {
