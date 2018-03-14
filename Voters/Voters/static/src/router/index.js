@@ -6,6 +6,7 @@ import Voters from '@/views/voters'
 import Register from '@/views/newregister'
 import sign from '@/views/sign'
 import Edit from '@/views/edit'
+import Show from '@/views/showVote'
 
 Vue.use(Router)
 
@@ -27,6 +28,14 @@ export default new Router({
         title: '编辑'
       },
       component: Edit
+    },
+    {
+      path: '/showVote',
+      name: 'showVote',
+      meta: {
+        title: '投票结果'
+      },
+      component: Show
     },
     {
       path: '/voters',

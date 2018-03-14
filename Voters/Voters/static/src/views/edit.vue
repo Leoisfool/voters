@@ -54,15 +54,15 @@
                 <el-input-number size="medium" :min="1" :max="4" v-model="VoteInfo.MultiNum"></el-input-number>
             </el-form-item>
         </el-form>
-        <el-button @click="editVote()">确定</el-button>
+        <el-button @click="editVote()" class="addItemButton">确定</el-button>
         <br>
         <br>
         <el-table
           :data="itemData"
-          style="width: 100%">
+          class="itemTable">
             <el-table-column
-            label="选项名称"
-            width="180">
+            label="修改选项"
+            width="140">
             <template slot-scope="scope">
                 <el-popover trigger="hover" placement="top">
                 <p>选项内容: {{ scope.row.Desc }}</p>
@@ -73,7 +73,7 @@
                 </el-popover>
             </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label=" ">
             <template slot-scope="scope">
                 <el-button
                 size="mini"
@@ -85,6 +85,7 @@
             </template>
             </el-table-column>
         </el-table>
+        <el-button type="primary" class="addItemButton" @click="addItem()">添加选项</el-button>
       </el-main>
     </el-container>
 
@@ -101,6 +102,19 @@
         <el-button @click="confirmEditItem()">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 添加item -->
+    <el-dialog
+      title="添加选项"
+      :visible.sync="addItemVisible"
+      width="40%"
+      :before-close="closeItemdialog">
+      <span ref="itemsBox">
+        选项内容<el-input v-model="addItemInfo.Desc"></el-input>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addItemFun()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -111,12 +125,17 @@ export default {
       VoteInfo: {},
       itemData: [],
       editItemVisible: false,
-      editItemInfo:{
+      addItemVisible: false,
+      editItemInfo: {
         ItemId: 1,
         VoteId: 1,
         Desc: '还没有呢',
         DescPicUrl: 'XXXX',
         Token: sessionStorage.Token
+      },
+      delItemInfo: {},
+      addItemInfo: {
+        Desc: '还没有呢'
       }
     }
   },
@@ -125,13 +144,96 @@ export default {
   },
   computed: {},
   methods: {
+    addItem () {
+      this.addItemInfo.Desc = ''
+      this.addItemVisible = true
+      this.addItemInfo.VoteId = sessionStorage.VoteId
+      this.addItemInfo.Token = sessionStorage.Token
+    },
+    addItemFun () {
+      this.$http.post('http://localhost:12612/api/item', this.addItemInfo)
+        .then(res => {
+          if (res.data.State === 1) {
+            this.$message({
+              type: 'success',
+              message: '添加成功'
+            })
+            this.getVoteInfo()
+          } else {
+            this.$message({
+              type: 'error',
+              message: '添加失败了'
+            })
+          }
+        })
+        .catch(res => {
+          this.$message({
+            type: 'error',
+            message: res.data
+          })
+        })
+      this.addItemVisible = false
+    },
+    itemDelete (index, row) {
+      this.delItemInfo = row
+      this.delItemInfo.Token = sessionStorage.Token
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '删除选项', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http.post('http://localhost:12612/api/deleteitem', this.delItemInfo)
+            .then(res => {
+              if (res.data.State === 1) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                this.getVoteInfo()
+              } else {
+                this.$message.error('删除失败')
+              }
+            })
+            .catch(res => {
+              this.$message.error('出错了')
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
     itemEdit (index, row) {
-
-      console.log(index, row)
+      this.editItemInfo = row
       this.editItemVisible = true
+    },
+    confirmEditItem () {
+      debugger
+      this.editItemInfo.Token = sessionStorage.Token
+      this.editItemInfo.UserId = sessionStorage.UserId
+      this.$http.put('http://localhost:12612/api/item', this.editItemInfo)
+        .then(res => {
+          if (res.data.State === 1) {
+            this.$message({
+              type: 'success',
+              message: '修改成功'
+            })
+          } else {
+            this.$message.error('修改失败')
+          }
+        })
+        .catch(res => {
+          this.$message.error('进入了catch里面')
+        })
+      this.getVoteInfo()
+      this.closeItemdialog()
     },
     closeItemdialog () {
       this.editItemVisible = false
+      this.addItemVisible = false
     },
     getVoteInfo () {
       let url = 'http://localhost:12612/api/vote?id=' + sessionStorage.VoteId
@@ -148,7 +250,7 @@ export default {
         })
       })
     },
-    switch () { // 修改参数
+    switch () { // 编辑Vote时修改参数
       this.VoteInfo.Token = sessionStorage.Token
       if (this.VoteInfo.VoteAble === '投票ing') {
         this.VoteInfo.VoteAble = 1
@@ -237,9 +339,20 @@ h2 {
 .inputStyle{
     text-align: left;
 }
+.addItemButton{
+  float: right;
+  margin: 10px 0 20px 0;
+}
+.itemTable{
+  width: 100%;
+}
 @media all and (min-width: 1000px) {
+  .itemTable{
+    width: 70%;
+    margin: 0 15%;
+  }
   .edit .form{
-    width: 40%;
+    width: 70%;
     margin: 0 auto;
   }
 }

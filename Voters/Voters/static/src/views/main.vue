@@ -119,18 +119,6 @@
         <el-button type="primary" @click="doVote()" :disabled="voteDisabled">投 票</el-button>
       </span>
     </el-dialog>
-    <!-- eChart -->
-    <el-dialog
-      :title="eChartTitle"
-      :visible.sync="eChartVisible"
-      width="100%"
-      center>
-      <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="eChartVisible = false">我了解了</el-button>
-      </span>
-    </el-dialog>
-      <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
   </div>
 </template>
 
@@ -141,9 +129,7 @@ export default {
     return {
       msg: 'hello',
       voteDisabled: true,
-      eChartTitle: '当前状态',
       background: true,
-      eChartVisible: false,
       showLogin: true,
       showRegister: true,
       showMyHost: false,
@@ -160,17 +146,7 @@ export default {
         Token: '',
         ItemIds: []
       },
-      items: [],
-      series: [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius: '55%',
-          data: [
-            {value: 235, name: '视频广告'}
-          ]
-        }
-      ]
+      items: []
     }
   },
   beforeMount: function () {
@@ -182,36 +158,6 @@ export default {
     this.printChart()
   },
   methods: {
-    printChart () {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('myChart'))
-      let url = 'http://localhost:12612/api/vote?id=' + this.voteInfo.VoteId
-      this.$http.get(url).then(res => {
-        debugger
-        let ids = res.data.ItemIds
-        this.series[0].data = []
-        let datas = this.series[0].data
-        let obj = {}
-        let getItemUrl
-        ids.forEach((id) => {
-          console.log(id)
-          getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
-          console.log(getItemUrl)
-          this.$http.get(getItemUrl).then(itemRes => {
-            obj.value = itemRes.data.Score
-            obj.name = itemRes.data.Desc
-            console.log(obj)
-            datas.push(obj)
-            console.log('datas' + datas)
-            console.log(this.series[0].data)
-          })
-        })
-      })
-      // 绘制图表
-      myChart.setOption({
-        series: this.series
-      })
-    },
     getPageNum () {
       this.$http.get('http://localhost:12612/api/getpagenum').then(res => {
         this.totalVotes = res.data.PageNum * 10
@@ -269,6 +215,7 @@ export default {
     },
     view (row) {
       this.viewInfo = row
+      sessionStorage.VoteId = row.VoteId
       let url = 'http://localhost:12612/api/vote?id=' + row.VoteId
       this.voteInfo.ItemIds = []
       this.$http.get(url).then(res => {
@@ -318,6 +265,8 @@ export default {
               message: '投票成功'
             })
             this.viewDialogVisible = false
+            this.$router.push('/showVote')
+
             this.printChart()
           } else {
             this.$message('投票失败，你可能需要登录')
