@@ -52,7 +52,7 @@ export default {
             this.$store.commit('setUserId', res.data.UserId)
             this.$router.push({ path: '../voters/' })
           } else {
-            console.log('密码不正确或验证码不正确或者您已经登录')
+            this.$message.error('您没有登录进去呢，try again')
           }
         })
         .catch((error) => {

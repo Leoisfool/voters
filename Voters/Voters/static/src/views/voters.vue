@@ -118,7 +118,7 @@
             </el-col>
             <el-col :span="7">
               <div class="grid-content">
-                <el-button type="success" plain>
+                <el-button type="success" plain @click="dialogVisible = true">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-add"></use>
                   </svg>
@@ -263,17 +263,28 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">投票</el-button>
+                @click="doVote(scope.$index, scope.row)">投票</el-button>
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                @click="voteEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                @click="voteDelete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <br>
+        <div class="block" style="float:right">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-size="10"
+            :background="background"
+            layout="prev, pager, next, jumper"
+            :total.sync="totalVotes">
+          </el-pagination>
+        </div>
       </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
@@ -325,13 +336,92 @@
       title="创建选项"
       :visible.sync="createItemVisible"
       width="40%"
-      :before-close="handleClose">
-      <span>
-        <el-input v-model="itemMsg.Desc"></el-input>
+      :before-close="closeItemdialog">
+      <span ref="itemsBox">
+        选项内容<el-input v-model="itemMsg.Desc"></el-input>
+        <br>
+        <br>
+        <!-- <el-button
+          round
+          icon="el-icon-circle-plus-outline"
+          @click="createItemFun()">添加</el-button> -->
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="createItemVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createItemFun()">确 定</el-button>
+        <el-button @click="addFinish()">完 成</el-button>
+        <el-button type="primary" @click="addItem()">继续添加</el-button>
+      </span>
+    </el-dialog>
+    <!-- 查看单个投票信息 -->
+    <el-dialog
+      :title="voteMsgs.Topic"
+      :visible.sync="viewDialogVisible"
+      width="80%"
+      center>
+      <span>
+        <el-alert
+          :title="voteMsgs.Desc"
+          type="success"
+          :closable="false">
+        </el-alert>
+        <el-alert
+          :title="'你需要投' + voteMsgs.MultiNum + '票'"
+          type="success"
+          :closable="false">
+        </el-alert>
+        <el-checkbox-group
+          v-model="doVoteMsgs.ItemIds"
+          :min="0"
+          :max="voteMsgs.MultiNum">
+          <el-checkbox v-for="item in items" :label="item.ItemId" :key="item.ItemId">{{item.Desc}}</el-checkbox>
+        </el-checkbox-group>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="viewDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="vote()">投 票</el-button>
+      </span>
+    </el-dialog>
+    <!-- 编辑 -->
+    <el-dialog
+      title="编辑"
+      :visible.sync="editVisible"
+      width="500px"
+      >
+      <span>
+        <el-form ref="form" :model="voteMsg" label-width="80px">
+          <el-form-item label="投票主题">
+            <el-input v-model="voteMsg.Topic"></el-input>
+          </el-form-item>
+          <el-form-item label="投票详情">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="voteMsg.Desc">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="是否激活">
+            <el-tooltip :content="voteMsg.VoteAble == '1'?'激活':'未激活'" placement="top">
+              <el-switch
+                v-model="voteMsg.VoteAble"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0">
+              </el-switch>
+            </el-tooltip>
+          </el-form-item>
+          <el-form-item label="选项个数">
+            <el-input-number size="medium" :min="1" :max="4" v-model="voteMsg.MultiNum"></el-input-number>
+          </el-form-item>
+          <el-form-item label="截止时间">
+          </el-form-item>
+        </el-form>
+      </span>
+      <span>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取消</el-button>
+        <el-button @click="editVote()">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -341,19 +431,12 @@
 export default {
   data () {
     return {
-      tableData: [{
-        'UserBelong': 1,
-        'Topic': 'USA大选',
-        'Desc': '2016美国总统大选,大家选出你支持的人，快快哦',
-        'VoteAble': '1',
-        'MultiNum': 1,
-        'OverdueTime': 1520319941,
-        'CreateTime': 1520309941,
-        'Token': '21BAD4931F81504C5AF7E7A7F793CEE2'
-      }],
+      background: '#f1f1f1',
+      tableData: [],
       dialogVisible: false,
       createItemVisible: false,
-      UserId: this.$store.state.UserId,
+      viewDialogVisible: false,
+      editVisible: false,
       Token: this.$store.state.Token,
       voteMsg: {
         UserBelong: sessionStorage.UserId,
@@ -366,13 +449,27 @@ export default {
         Token: sessionStorage.Token
       },
       itemMsg: {
-        VoteId: '3',
+        VoteId: '',
         Desc: '',
         DescPicUrl: 'XXX',
         Token: sessionStorage.Token,
         UserId: sessionStorage.UserId
-      }
+      },
+      createItems: [],
+      totalVotes: 0,
+      currentPage: 1,
+      voteMsgs: {},
+      doVoteMsgs: {
+        VoteId: '',
+        Token: sessionStorage.Token,
+        ItemIds: []
+      },
+      items: []
     }
+  },
+  mounted () {
+    this.getPageNum()
+    this.handleCurrentChange(1)
   },
   computed: {
     mySwitch () {
@@ -414,37 +511,152 @@ export default {
         this.$message('error')
       }
     },
-    handleEdit (index, row) {
-      console.log(index, row)
+    doVote (index, row) {
+      this.voteMsgs = row
+      this.doVoteMsgs.VoteId = row.VoteId
+      this.doVoteMsgs.ItemIds = []
+      let url = 'http://localhost:12612/api/vote?id=' + row.VoteId
+      this.$http.get(url).then(res => {
+        let ids = res.data.ItemIds
+        this.items = []
+        ids.forEach(id => {
+          let getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+          this.$http.get(getItemUrl).then(itemRes => {
+            this.items.push(itemRes.data)
+          })
+        })
+      })
+      this.viewDialogVisible = true
     },
-    handleDelete (index, row) {
-      console.log(index, row)
+    vote () {
+      this.$http.post('http://localhost:12612/api/dovote', this.doVoteMsgs)
+        .then(res => {
+          if (res.data.State === 1) {
+            this.$message({
+              type: 'success',
+              message: '投票成功'
+            })
+            this.viewDialogVisible = false
+          } else {
+            this.$message(res.data.ErrorInfo)
+          }
+        })
+    },
+    voteEdit (index, row) {
+      console.log(row)
+      this.voteMsg = row
+      this.editVisible = true
+      let url = 'http://localhost:12612/api/vote?id=' + row.VoteId
+      this.$http.get(url).then(res => {
+        let ids = res.data.ItemIds
+        this.items = []
+        ids.forEach(id => {
+          let getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+          this.$http.get(getItemUrl).then(itemRes => {
+            this.items.push(itemRes.data)
+          })
+        })
+      })
+    },
+    voteDelete (row) {
+      var delInfo = {
+        VoteId: row.VoteId,
+        Token: sessionStorage.Token
+      }
+      this.$confirm('该操作将永远删除该投票主题，是否继续？', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('http://localhost:12612/api/deletevote', delInfo)
+          .then((res) => {
+            if (res.data.State === 1) {
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              })
+              this.handleCurrentChange(this.currentPage)
+            } else {
+              this.$message({
+                type: 'erroe',
+                message: '删除失败'
+              })
+            }
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      })
     },
     handleClose () {
       this.dialogVisible = false
+    },
+    addItem () {
+      this.itemMsg.Desc = ''
+      this.createItemFun()
+      this.createItemVisible = true
+    },
+    addFinish () {
+      this.createItemFun()
+      this.createItemVisible = false
+      this.handleCurrentChange(this.currentPage)
     },
     createVoteFun () {
       this.$http.post('http://localhost:12612/api/vote', this.voteMsg)
         .then(res => {
           if (res.data.State === 1) {
+            this.$message({
+              type: 'success',
+              message: '创建成功'
+            })
+            this.itemMsg.VoteId = res.data.VoteId
             console.log('创建成功')
           } else {
-            console.log('创建失败')
+            this.$message({
+              type: 'error',
+              message: '创建失败'
+            })
           }
         })
       this.dialogVisible = false
       this.createItemVisible = true
     },
+    closeItemdialog () {
+      this.createItemVisible = false
+    },
     createItemFun () {
       this.$http.post('http://localhost:12612/api/item', this.itemMsg)
         .then(res => {
           if (res.data.State === 1) {
-            this.$message('添加成功')
+            this.$message({
+              type: 'success',
+              message: '添加成功'
+            })
           } else {
-            this.$message('添加失败')
+            this.$message({
+              type: 'error',
+              message: '添加失败'
+            })
           }
         })
-      this.createItemVisible = false
+    },
+    handleCurrentChange (val) {
+      let url = 'http://localhost:12612/api/vote/' + this.currentPage + '?userId=' + sessionStorage.UserId
+      this.tableData = []
+      this.$http.get(url).then(res => {
+        let response = res.data
+        if (response.State === 1) {
+          this.tableData = response.items
+        }
+      })
+    },
+    getPageNum () {
+      let getPageNumUrl = 'http://localhost:12612/api/getpagenum?userid=73'
+      this.$http.get(getPageNumUrl).then(res => {
+        this.totalVotes = res.data.PageNum * 10
+      })
     }
   }
 }
@@ -490,6 +702,10 @@ h2{
   .voter .el-table{
     width: 60%;
     left: 40%;
+    top: -280px;
+  }
+  .voter .block{
+    position: relative;
     top: -280px;
   }
 }

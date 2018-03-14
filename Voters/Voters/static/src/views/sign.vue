@@ -33,7 +33,7 @@ export default {
     }
   },
   mounted: function () {
-    this.change(sessionStorage.loginOrReg)
+    this.change(this.$store.state.loginOrReg)
   },
   methods: {
     change: function (selected) {

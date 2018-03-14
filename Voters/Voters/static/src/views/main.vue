@@ -71,7 +71,7 @@
           label="操作"
           width="200">
           <template slot-scope="scope">
-            <el-button @click="view(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="view(scope.row)" type="text" size="small">参与</el-button>
             <el-button type="text" size="small">不感兴趣</el-button>
             <el-button type="text" size="small">关注</el-button>
           </template>
@@ -81,10 +81,11 @@
       <div class="block">
         <el-pagination
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage3"
+          :current-page.sync="currentPage"
           :page-size="10"
+          :background="background"
           layout="prev, pager, next, jumper"
-          :total="totalVotes">
+          :total.sync="totalVotes">
         </el-pagination>
       </div>
     </section>
@@ -101,42 +102,79 @@
           type="success"
           :closable="false">
         </el-alert>
-        <el-checkbox-group 
-          v-model="voteInfo.checkeditems"
-          :min="viewInfo.MultiNum"
+        <el-alert
+          :title="'你需要投' + viewInfo.MultiNum + '票'"
+          type="success"
+          :closable="false">
+        </el-alert>
+        <el-checkbox-group
+          v-model="voteInfo.ItemIds"
+          :min="0"
           :max="viewInfo.MultiNum">
-          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+          <el-checkbox v-for="item in items" :label="item.ItemId" :key="item.ItemId">{{item.Desc}}</el-checkbox>
         </el-checkbox-group>
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+        <el-button @click="viewDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="doVote()">投 票</el-button>
       </span>
     </el-dialog>
+    <!-- eChart -->
+    <el-dialog
+      :title="eChartTitle"
+      :visible.sync="eChartVisible"
+      width="100%"
+      center>
+      <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="eChartVisible = false">我了解了</el-button>
+      </span>
+    </el-dialog>
+      <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
   </div>
 </template>
 
 <script>
+var echarts = require('echarts')
 import axios from 'axios'
-axios.defaults.timeout = 5000
 export default {
   data () {
     return {
       msg: 'hello',
+      eChartTitle: '当前状态',
+      background: true,
+      eChartVisible: false,
       showLogin: true,
       showRegister: true,
       showMyHost: false,
       showLoginout: false,
       tableData: [],
-      currentPage3: 1,
-      totalVotes: '',
+      currentPage: 1,
+      totalVotes: 0,
       viewDialogVisible: false,
       viewInfo: {
         title: 'hahah'
       },
       voteInfo: {
-        checkeditems: []
-      }
+        VoteId: '1',
+        Token: '',
+        ItemIds: []
+      },
+      items: [],
+      series : [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: '55%',
+          data:[
+              {value:235, name:'视频广告'},
+              {value:274, name:'联盟广告'},
+              {value:310, name:'邮件营销'},
+              {value:335, name:'直接访问'},
+              {value:400, name:'搜索引擎'}
+          ]
+        }
+      ]
     }
   },
   beforeMount: function () {
@@ -145,8 +183,34 @@ export default {
   mounted () {
     this.getPageNum()
     this.handleCurrentChange(1)
+    this.printChart()
   },
   methods: {
+    printChart () {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('myChart'));
+      let url = 'http://localhost:12612/api/vote?id=' + this.voteInfo.VoteId
+      this.$http.get(url).then(res => {
+        debugger
+        let ids = res.data.ItemIds
+        this.series[0].data = []
+        let datas = this.series[0].data
+        let obj = {}
+        ids.forEach(id => {
+          let getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+          this.$http.get(getItemUrl).then(itemRes => {
+            debugger
+            obj.value = itemRes.data.Score
+            obj.name = itemRes.data.Desc
+            datas.push(obj)
+          })
+        })
+      })
+      // 绘制图表
+      myChart.setOption({
+        series : this.series
+      })
+    },
     getPageNum () {
       this.$http.get('http://localhost:12612/api/getpagenum').then(res => {
         this.totalVotes = res.data.PageNum * 10
@@ -202,9 +266,22 @@ export default {
       this.$router.push('sign/register')
     },
     view (row) {
-      this.viewDialogVisible = true
       this.viewInfo = row
-      console.log(row)
+      let url = 'http://localhost:12612/api/vote?id=' + row.VoteId
+      this.voteInfo.ItemIds = []
+      this.$http.get(url).then(res => {
+        let ids = res.data.ItemIds
+        this.items = []
+        ids.forEach(id => {
+          let getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+          this.$http.get(getItemUrl).then(itemRes => {
+            this.items.push(itemRes.data)
+          })
+        })
+      })
+      this.viewDialogVisible = true
+      this.voteInfo.VoteId = row.VoteId
+      this.voteInfo.Token = this.$store.state.Token
     },
     handleCurrentChange (val) {
       // console.log(`当前页: ${val}`)
@@ -223,6 +300,24 @@ export default {
           this.tableData = table
         }
       })
+    },
+    doVote () {
+      this.$http.post('http://localhost:12612/api/dovote', this.voteInfo)
+        .then(res => {
+          if (res.data.State === 1) {
+            this.$message({
+              type: 'success',
+              message: '投票成功'
+            })
+            this.viewDialogVisible = false
+            debugger
+            this.printChart() 
+          } else {
+            this.$message('投票失败，你可能需要登录')
+          }
+        }).catch(res => {
+          this.$message('投票失败，你可能需要登录')
+        })
     }
   },
   computed: {
@@ -315,6 +410,14 @@ export default {
   margin: 1px;
   background-color: rgba(0, 0, 0, 0.12);
   color: white;
+}
+#myChart{
+  background-color: white;
+  margin-left: 50%;
+  left: -150px;
+  top: 20px;
+  border: 1px #eee solid;
+  border-radius: 4px;
 }
 
 @media all and (min-width: 1000px) {

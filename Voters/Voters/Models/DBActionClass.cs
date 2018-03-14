@@ -417,8 +417,7 @@ namespace Voters.Models
             command.Parameters.Add(new MySqlParameter("@voteId", voteId));
 
             conn.Open();
-            try
-            {
+
                 var res = command.ExecuteReader();
                 List<uint> b = new List<uint>();
                 while (res.Read())
@@ -426,15 +425,7 @@ namespace Voters.Models
                     b.Add((uint)res[0]);
                 }
                 item.ItemIds = b.ToArray();
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                conn.Close();
-            }
+
             return true;
         }
 

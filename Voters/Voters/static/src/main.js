@@ -11,6 +11,7 @@ import VueResourse from 'vue-resource'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
+import echarts from 'echarts'
 Vue.prototype.$http = axios
 
 Vue.use(Vuex)
