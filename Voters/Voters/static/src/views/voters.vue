@@ -280,7 +280,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-size="10"
-            :background="background"
+            :background="true"
             layout="prev, pager, next, jumper"
             :total.sync="totalVotes">
           </el-pagination>
@@ -377,51 +377,7 @@
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="viewDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="vote()">投 票</el-button>
-      </span>
-    </el-dialog>
-    <!-- 编辑 -->
-    <el-dialog
-      title="编辑"
-      :visible.sync="editVisible"
-      width="500px"
-      >
-      <span>
-        <el-form ref="form" :model="voteMsg" label-width="80px">
-          <el-form-item label="投票主题">
-            <el-input v-model="voteMsg.Topic"></el-input>
-          </el-form-item>
-          <el-form-item label="投票详情">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="voteMsg.Desc">
-            </el-input>
-          </el-form-item>
-          <el-form-item label="是否激活">
-            <el-tooltip :content="voteMsg.VoteAble == '1'?'激活':'未激活'" placement="top">
-              <el-switch
-                v-model="voteMsg.VoteAble"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                active-value="1"
-                inactive-value="0">
-              </el-switch>
-            </el-tooltip>
-          </el-form-item>
-          <el-form-item label="选项个数">
-            <el-input-number size="medium" :min="1" :max="4" v-model="voteMsg.MultiNum"></el-input-number>
-          </el-form-item>
-          <el-form-item label="截止时间">
-          </el-form-item>
-        </el-form>
-      </span>
-      <span>
-      </span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editVisible = false">取消</el-button>
-        <el-button @click="editVote()">确定</el-button>
+        <el-button type="primary" @click="vote()" :disabled="disabledvote">投 票</el-button>
       </span>
     </el-dialog>
   </div>
@@ -436,7 +392,7 @@ export default {
       dialogVisible: false,
       createItemVisible: false,
       viewDialogVisible: false,
-      editVisible: false,
+      disabledvote: true,
       Token: this.$store.state.Token,
       voteMsg: {
         UserBelong: sessionStorage.UserId,
@@ -505,13 +461,14 @@ export default {
       } else if (command === 'loginOut') {
         this.loginOut()
       } else if (command === 'createVote') {
-        // this.$message('click on item ' + command)
+        this.$message.error('天呐')
         this.dialogVisible = true
       } else {
         this.$message('error')
       }
     },
     doVote (index, row) {
+      debugger
       this.voteMsgs = row
       this.doVoteMsgs.VoteId = row.VoteId
       this.doVoteMsgs.ItemIds = []
@@ -526,6 +483,11 @@ export default {
           })
         })
       })
+      if (row.VoteAble === 0) {
+        this.disabledvote = true
+      } else {
+        this.disabledvote = false
+      }
       this.viewDialogVisible = true
     },
     vote () {
@@ -543,20 +505,9 @@ export default {
         })
     },
     voteEdit (index, row) {
-      console.log(row)
+      sessionStorage.VoteId = row.VoteId
+      this.$router.push('/edit')
       this.voteMsg = row
-      this.editVisible = true
-      let url = 'http://localhost:12612/api/vote?id=' + row.VoteId
-      this.$http.get(url).then(res => {
-        let ids = res.data.ItemIds
-        this.items = []
-        ids.forEach(id => {
-          let getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
-          this.$http.get(getItemUrl).then(itemRes => {
-            this.items.push(itemRes.data)
-          })
-        })
-      })
     },
     voteDelete (row) {
       var delInfo = {
@@ -594,8 +545,8 @@ export default {
       this.dialogVisible = false
     },
     addItem () {
-      this.itemMsg.Desc = ''
       this.createItemFun()
+      this.itemMsg.Desc = ''
       this.createItemVisible = true
     },
     addFinish () {

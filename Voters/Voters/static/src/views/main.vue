@@ -116,7 +116,7 @@
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="viewDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="doVote()">投 票</el-button>
+        <el-button type="primary" @click="doVote()" :disabled="voteDisabled">投 票</el-button>
       </span>
     </el-dialog>
     <!-- eChart -->
@@ -136,11 +136,11 @@
 
 <script>
 var echarts = require('echarts')
-import axios from 'axios'
 export default {
   data () {
     return {
       msg: 'hello',
+      voteDisabled: true,
       eChartTitle: '当前状态',
       background: true,
       eChartVisible: false,
@@ -161,17 +161,13 @@ export default {
         ItemIds: []
       },
       items: [],
-      series : [
+      series: [
         {
           name: '访问来源',
           type: 'pie',
           radius: '55%',
-          data:[
-              {value:235, name:'视频广告'},
-              {value:274, name:'联盟广告'},
-              {value:310, name:'邮件营销'},
-              {value:335, name:'直接访问'},
-              {value:400, name:'搜索引擎'}
+          data: [
+            {value: 235, name: '视频广告'}
           ]
         }
       ]
@@ -188,7 +184,7 @@ export default {
   methods: {
     printChart () {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('myChart'));
+      var myChart = echarts.init(document.getElementById('myChart'))
       let url = 'http://localhost:12612/api/vote?id=' + this.voteInfo.VoteId
       this.$http.get(url).then(res => {
         debugger
@@ -196,19 +192,24 @@ export default {
         this.series[0].data = []
         let datas = this.series[0].data
         let obj = {}
-        ids.forEach(id => {
-          let getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+        let getItemUrl
+        ids.forEach((id) => {
+          console.log(id)
+          getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+          console.log(getItemUrl)
           this.$http.get(getItemUrl).then(itemRes => {
-            debugger
             obj.value = itemRes.data.Score
             obj.name = itemRes.data.Desc
+            console.log(obj)
             datas.push(obj)
+            console.log('datas' + datas)
+            console.log(this.series[0].data)
           })
         })
       })
       // 绘制图表
       myChart.setOption({
-        series : this.series
+        series: this.series
       })
     },
     getPageNum () {
@@ -248,6 +249,7 @@ export default {
         .then((res) => {
           if (res.data.State === 1) {
             this.$message('退出成功！')
+            location.reload()
           } else {
             this.$message('退出失败')
           }
@@ -279,6 +281,12 @@ export default {
           })
         })
       })
+      debugger
+      if (row.VoteAble === '投票ing') {
+        this.voteDisabled = false
+      } else {
+        this.voteDisabled = true
+      }
       this.viewDialogVisible = true
       this.voteInfo.VoteId = row.VoteId
       this.voteInfo.Token = this.$store.state.Token
@@ -310,8 +318,7 @@ export default {
               message: '投票成功'
             })
             this.viewDialogVisible = false
-            debugger
-            this.printChart() 
+            this.printChart()
           } else {
             this.$message('投票失败，你可能需要登录')
           }

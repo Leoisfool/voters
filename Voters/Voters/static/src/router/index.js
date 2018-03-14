@@ -5,6 +5,7 @@ import Main from './../views/main'
 import Voters from '@/views/voters'
 import Register from '@/views/newregister'
 import sign from '@/views/sign'
+import Edit from '@/views/edit'
 
 Vue.use(Router)
 
@@ -18,6 +19,14 @@ export default new Router({
         title: 'Voters'
       },
       component: Main
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      meta: {
+        title: '编辑'
+      },
+      component: Edit
     },
     {
       path: '/voters',
