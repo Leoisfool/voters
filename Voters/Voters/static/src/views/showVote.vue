@@ -26,7 +26,21 @@
         </el-row>
       </el-header>
       <el-main>
-        <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
+        <!-- <div id="myChart" :style="{width: '300px', height: '300px'}"></div> -->
+        <el-table
+          :data="tableData"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="itemDesc"
+            label="选项"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="Score"
+            label="得票">
+          </el-table-column>
+        </el-table>
       </el-main>
     </el-container>
   </div>
@@ -39,50 +53,98 @@ export default {
   data () {
     return {
       msg: 'ShowTime',
-      series: [
+      tableData: [
         {
-          name: '访问来源',
-          type: 'pie',
-          radius: '55%',
-          data: [
-            {value: 235, name: '视频广告'}
-          ]
+          itemDesc: 'sfcsd',
+          Score: 4
         }
       ]
+      // myData: [
+      //   {value: 235, name: '视频广告'}
+      // ]
     }
   },
   mounted () {
-    this.printChart()
+    // this.series[0].data = this.showData
+    this.createData()
   },
   methods: {
-    printChart () {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('myChart'))
+    createData () {
+      // var myData = []
       let url = 'http://localhost:12612/api/vote?id=' + sessionStorage.VoteId
-      this.$http.get(url).then(res => {
-        debugger
-        let ids = res.data.ItemIds
-        this.series[0].data = []
-        let datas = this.series[0].data
-        let obj = {}
-        let getItemUrl
-        ids.forEach((id) => {
-          console.log(id)
-          getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
-          console.log(getItemUrl)
-          this.$http.get(getItemUrl).then(itemRes => {
-            obj.value = itemRes.data.Score
-            obj.name = itemRes.data.Desc
-            console.log(obj)
-            datas.push(obj)
-            console.log('datas' + datas)
-            console.log(this.series[0].data)
+      this.$http.get(url)
+        .then(res => {
+          let ItemIds = res.data.ItemIds
+          ItemIds.forEach(element => {
+            // debugger
+            this.getItemsInfo(element)
           })
         })
-      })
+        .catch(res => {
+          console.log(res.data)
+        })
+    },
+    getItemsInfo (id, myData) {
+      // var myChart = echarts.init(document.getElementById('myChart'))
+      var getItemUrl = 'http://localhost:12612/api/item?ItemId=' + id
+      var obj = {
+        itemDesc: '',
+        Score: ''
+      }
+      // var box = document.getElementById('box')
+      this.$http.get(getItemUrl)
+        .then(itemRes => {
+          // debugger
+          obj.Score = itemRes.data.Score
+          obj.itemDesc = itemRes.data.Desc
+          this.tableData.push(obj)
+          // this.printChart(myData)
+        })
+    },
+    printChart (myData) {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
-        series: this.series
+        backgroundColor: '#2c343c',
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1]
+          }
+        },
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            data: myData,
+            roseType: 'angle',
+            label: {
+              normal: {
+                textStyle: {
+                  color: 'rgba(255, 255, 255, 0.3)'
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                lineStyle: {
+                  color: 'rgba(255, 255, 255, 0.3)'
+                }
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
       })
     },
     loginOut () {

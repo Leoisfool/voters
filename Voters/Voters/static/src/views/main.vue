@@ -123,7 +123,6 @@
 </template>
 
 <script>
-var echarts = require('echarts')
 export default {
   data () {
     return {
@@ -155,7 +154,6 @@ export default {
   mounted () {
     this.getPageNum()
     this.handleCurrentChange(1)
-    this.printChart()
   },
   methods: {
     getPageNum () {
@@ -228,7 +226,6 @@ export default {
           })
         })
       })
-      debugger
       if (row.VoteAble === '投票ing') {
         this.voteDisabled = false
       } else {
@@ -265,14 +262,12 @@ export default {
               message: '投票成功'
             })
             this.viewDialogVisible = false
-            this.$router.push('/showVote')
-
-            this.printChart()
           } else {
-            this.$message('投票失败，你可能需要登录')
+            this.$message.error('你可能没有登录哦' + res.data.ErrorInfo)
           }
+          this.$router.push('/showVote')
         }).catch(res => {
-          this.$message('投票失败，你可能需要登录')
+          this.$message.error('你可能没有登录哦')
         })
     }
   },
